@@ -13,9 +13,19 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
   eduscope.degrees = [];
   $.each( data, function( key, val ) {
     eduscope.labels.push(val.vuosi);
-    eduscope.degrees.push(val.tutkinnot);
+    eduscope.degrees.push(+val.tutkinnot);
+    if (val.vuosi==2016) {
+      eduscope.sel_degree = +val.tutkinnot;
+    }
   });
-  console.log("eduscope",eduscope)
+  eduscope.min_degree = eduscope.degrees.reduce(function(a, b) {
+    return Math.min(a, b);
+  });
+  eduscope.max_degree = eduscope.degrees.reduce(function(a, b) {
+    return Math.max(a, b);
+  });
+  console.debug("eduscope",eduscope)
+  $("#bar_degrees").append(eduscope.sel_degree + " ");
 
   // -- Area Chart Example
   var ctx1 = document.getElementById("myAreaChart");
@@ -56,8 +66,8 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
         }],
         yAxes: [{
           ticks: {
-            min: 450,
-            max: 700,
+            min: eduscope.min_degree - Math.floor(eduscope.min_degree/10),
+            max: eduscope.max_degree + Math.ceil(eduscope.max_degree/10),
             maxTicksLimit: 5
           },
           gridLines: {
@@ -123,18 +133,20 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
       }
     }
   });
+
+
+  // -- Pie Chart Example
+  var ctx3 = document.getElementById("myPieChart");
+  if (ctx3) {
+    var myPieChart = new Chart(ctx3, {
+      type: 'pie',
+      data: {
+        labels: ["Blue", "Red", "Yellow", "Green"],
+        datasets: [{
+          data: [12.21, 15.58, 11.25, 8.32],
+          backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+        }],
+      },
+    });
+  }
 });
-// -- Pie Chart Example
-var ctx3 = document.getElementById("myPieChart");
-if (ctx3) {
-  var myPieChart = new Chart(ctx3, {
-    type: 'pie',
-    data: {
-      labels: ["Blue", "Red", "Yellow", "Green"],
-      datasets: [{
-        data: [12.21, 15.58, 11.25, 8.32],
-        backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
-      }],
-    },
-  });
-}
