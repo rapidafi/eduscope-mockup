@@ -39,6 +39,12 @@
             <span class="nav-link-text">Charts</span>
           </a>
         </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+          <a class="nav-link" href="measures.html">
+            <i class="fa fa-fw fa-area-chart"></i>
+            <span class="nav-link-text">Measures</span>
+          </a>
+        </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="tables.html">
             <i class="fa fa-fw fa-table"></i>
@@ -63,50 +69,74 @@
   </nav>
   <div class="content-wrapper">
     <div class="container-fluid">
-      <!-- Area Chart Example-->
+      <!-- Charts -->
       <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-area-chart"></i> Area Chart Example</div>
-        <div class="card-body">
-          <canvas id="myAreaChart" width="100%" height="30"></canvas>
-        </div>
-        <div class="card-footer small text-muted">Updated sometime AM</div>
-      </div>
-      <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-bar-chart"></i> Bar Chart Example</div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-sm-8 my-auto">
-              <canvas id="myBarChart" width="100" height="50"></canvas>
+        <div class="row">
+          <div class="col-sm-6 my-auto">
+            <div class="card-header">
+              <i class="fa fa-area-chart"></i> Line Chart Example</div>
+            <div class="card-body">
+              <canvas id="myLineChart" width="100%" height="60"></canvas>
             </div>
-            <div class="col-sm-4 text-center my-auto">
-              <div class="small text-muted">Year:</div>
-              <div class="h4 mb-0 text-primary" id="bar_year"></div>
-              <hr>
-              <div class="h4 mb-0 text-primary" id="bar_degrees"></div>
-              <div class="small text-muted">Degrees</div>
-              <hr>
-              <div class="h4 mb-0 text-primary" id="bar_students"></div>
-              <div class="small text-muted">Students</div>
-              <hr>
-              <div class="h4 mb-0 text-primary" id="bar_new"></div>
-              <div class="small text-muted">New</div>
-              <hr>
-              <div class="h4 mb-0 text-primary" id="bar_present"></div>
-              <div class="small text-muted">Present</div>
-              <hr>
-              <div class="h4 mb-0 text-primary" id="bar_fte"></div>
-              <div class="small text-muted">FTE</div>
-              <hr>
-              <div class="h4 mb-0 text-primary" id="bar_fivefive"></div>
-              <div class="small text-muted">55sp</div>
+            <div class="card-footer small text-muted">Updated sometime AM</div>
+          </div>
+          <div class="col-sm-6 my-auto">
+            <div class="card-header">
+              <i class="fa fa-bar-chart"></i> Bar Chart Example</div>
+            <div class="card-body">
+              <canvas id="myBarChart" width="100%" height="60"></canvas>
+            </div>
+            <div class="card-footer small text-muted">Updated sometime PM</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="row">
+          <div class="col-sm-4 my-auto">
+            <div class="card-header">
+              <i class="fa fa-area-chart"></i> Degrees</div>
+            <div class="card-body">
+              <canvas id="degreesLineChart" width="100%" height="30"></canvas>
+            </div>
+          </div>
+          <div class="col-sm-4 my-auto">
+            <div class="card-header">
+              <i class="fa fa-area-chart"></i> Students</div>
+            <div class="card-body">
+              <canvas id="studentsLineChart" width="100%" height="30"></canvas>
+            </div>
+          </div>
+          <div class="col-sm-4 my-auto">
+            <div class="card-header">
+              <i class="fa fa-area-chart"></i> New</div>
+            <div class="card-body">
+              <canvas id="newLineChart" width="100%" height="30"></canvas>
+            </div>
+          </div>
+          <div class="col-sm-4 my-auto">
+            <div class="card-header">
+              <i class="fa fa-area-chart"></i> Present</div>
+            <div class="card-body">
+              <canvas id="presentLineChart" width="100%" height="30"></canvas>
+            </div>
+          </div>
+          <div class="col-sm-4 my-auto">
+            <div class="card-header">
+              <i class="fa fa-area-chart"></i> FTE</div>
+            <div class="card-body">
+              <canvas id="fteLineChart" width="100%" height="30"></canvas>
+            </div>
+          </div>
+          <div class="col-sm-4 my-auto">
+            <div class="card-header">
+              <i class="fa fa-area-chart"></i> 55sp</div>
+            <div class="card-body">
+              <canvas id="fivefiveLineChart" width="100%" height="30"></canvas>
             </div>
           </div>
         </div>
-        <div class="card-footer small text-muted">Updated sometime PM</div>
       </div>
-
     </div>
     <!-- /.container-fluid-->
     <footer class="sticky-footer">
@@ -153,6 +183,7 @@
     <!-- Custom scripts for this page-->
     <!-- script src="js/sb-admin-datatables.js"></script -->
     <script src="js/sb-admin-charts.js"></script>
+    <script src="js/sb-admin-measures.js"></script>
   </div>
   <!-- /.content-wrapper-->
 </body>

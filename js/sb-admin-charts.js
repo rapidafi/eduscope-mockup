@@ -51,9 +51,7 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
   $("#bar_fte").append(eduscope.sel_fte + " ");
   $("#bar_fivefive").append(eduscope.sel_fivefive + " ");
 
-  // -- Area Chart Example
-  var ctx1 = document.getElementById("myAreaChart");
-  var myLineChart = new Chart(ctx1, {
+  new Chart(document.getElementById("myLineChart"), {
     type: 'line',
     data: {
       labels: eduscope.labels,
@@ -62,7 +60,8 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
           label: "Degrees",
           data: eduscope.degrees,
           lineTension: 0.3,
-          backgroundColor: "rgba(2,117,216,0.2)",
+          backgroundColor: "rgba(0,0,0,0)",//invisible
+          //backgroundColor: "rgba(2,117,216,0.2)",
           borderColor: "rgba(2,117,216,1)",
           pointRadius: 5,
           pointBackgroundColor: "rgba(2,117,216,1)",
@@ -76,7 +75,8 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
           label: "Students",
           data: eduscope.students,
           lineTension: 0.3,
-          backgroundColor: "rgba(216,117,2,0.2)",
+          backgroundColor: "rgba(0,0,0,0)",//invisible
+          //backgroundColor: "rgba(216,117,2,0.2)",
           borderColor: "rgba(216,117,2,1)",
           pointRadius: 5,
           pointBackgroundColor: "rgba(216,117,2,1)",
@@ -90,7 +90,8 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
           label: "New",
           data: eduscope.new,
           lineTension: 0.3,
-          backgroundColor: "rgba(117,216,2,0.2)",
+          backgroundColor: "rgba(0,0,0,0)",//invisible
+          //backgroundColor: "rgba(117,216,2,0.2)",
           borderColor: "rgba(117,216,2,1)",
           pointRadius: 5,
           pointBackgroundColor: "rgba(117,216,2,1)",
@@ -104,7 +105,8 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
           label: "Present",
           data: eduscope.present,
           lineTension: 0.3,
-          backgroundColor: "rgba(2,216,117,0.2)",
+          backgroundColor: "rgba(0,0,0,0)",//invisible
+          //backgroundColor: "rgba(2,216,117,0.2)",
           borderColor: "rgba(2,216,117,1)",
           pointRadius: 5,
           pointBackgroundColor: "rgba(2,216,117,1)",
@@ -118,7 +120,8 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
           label: "FTE",
           data: eduscope.fte,
           lineTension: 0.3,
-          backgroundColor: "rgba(117,2,216,0.2)",
+          backgroundColor: "rgba(0,0,0,0)",//invisible
+          //backgroundColor: "rgba(117,2,216,0.2)",
           borderColor: "rgba(117,2,216,1)",
           pointRadius: 5,
           pointBackgroundColor: "rgba(117,2,216,1)",
@@ -132,7 +135,8 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
           label: "55sp",
           data: eduscope.fivefive,
           lineTension: 0.3,
-          backgroundColor: "rgba(216,2,117,0.2)",
+          backgroundColor: "rgba(0,0,0,0)",//invisible
+          //backgroundColor: "rgba(216,2,117,0.2)",
           borderColor: "rgba(216,2,117,1)",
           pointRadius: 5,
           pointBackgroundColor: "rgba(216,2,117,1)",
@@ -154,14 +158,15 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
             display: false
           },
           ticks: {
-            maxTicksLimit: 7
+            maxTicksLimit: 10
           }
         }],
         yAxes: [{
           ticks: {
             min: 0, //Math.min(eduscope.min_degree,eduscope.min_student)-50,
-            max: Math.max(eduscope.max_degree,eduscope.max_student)+50,
-            maxTicksLimit: 5
+            //max: Math.max(eduscope.max_degree,eduscope.max_student)+50,
+            max: Math.ceil((eduscope.max_student+(eduscope.max_student/100*5))/100)*100,
+            maxTicksLimit: 10
           },
           gridLines: {
             color: "rgba(0, 0, 0, .125)",
@@ -173,9 +178,8 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
       }
     }
   });
-  // -- Bar Chart Example
-  var ctx2 = document.getElementById("myBarChart");
-  var myLineChart = new Chart(ctx2, {
+  
+  new Chart(document.getElementById("myBarChart"), {
     type: 'bar',
     data: {
       labels: eduscope.labels,
@@ -183,37 +187,37 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
         {
           label: "Degrees",
           data: eduscope.degrees,
-          backgroundColor: "rgba(2,117,216,1)",
+          backgroundColor: "rgba(2,117,216,0.5)",
           borderColor: "rgba(2,117,216,1)",
         },
         {
           label: "Students",
           data: eduscope.students,
-          backgroundColor: "rgba(216,117,2,1)",
+          backgroundColor: "rgba(216,117,2,0.5)",
           borderColor: "rgba(216,117,2,1)",
         },
         {
           label: "New",
           data: eduscope.new,
-          backgroundColor: "rgba(117,216,2,0.2)",
+          backgroundColor: "rgba(117,216,2,0.5)",
           borderColor: "rgba(117,216,2,1)",
         },
         {
           label: "Present",
           data: eduscope.present,
-          backgroundColor: "rgba(2,216,117,0.2)",
+          backgroundColor: "rgba(2,216,117,0.5)",
           borderColor: "rgba(2,216,117,1)",
         },
         {
           label: "FTE",
           data: eduscope.fte,
-          backgroundColor: "rgba(117,2,216,0.2)",
+          backgroundColor: "rgba(117,2,216,0.5)",
           borderColor: "rgba(117,2,216,1)",
         },
         {
           label: "55sp",
           data: eduscope.fivefive,
-          backgroundColor: "rgba(216,2,117,0.2)",
+          backgroundColor: "rgba(216,2,117,0.5)",
           borderColor: "rgba(216,2,117,1)",
         },
       ],
@@ -228,14 +232,15 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
             display: false
           },
           ticks: {
-            maxTicksLimit: 6
+            maxTicksLimit: 10
           }
         }],
         yAxes: [{
           ticks: {
             min: 0, //Math.min(eduscope.min_degree,eduscope.min_student)-50,
-            max: Math.max(eduscope.max_degree,eduscope.max_student)+50,
-            maxTicksLimit: 50
+            //max: Math.max(eduscope.max_degree,eduscope.max_student)+50,
+            max: Math.ceil((eduscope.max_student+(eduscope.max_student/100*5))/100)*100,
+            maxTicksLimit: 10
           },
           gridLines: {
             display: true
@@ -243,7 +248,7 @@ $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Sai
         }],
       },
       legend: {
-        display: false
+        display: true
       }
     }
   });

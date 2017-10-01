@@ -12,8 +12,6 @@
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
   <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <!-- Page level plugin CSS-->
-  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
 </head>
@@ -72,24 +70,55 @@
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="#">Dashboard</a>
+          <a href="index.html">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Tables</li>
+        <li class="breadcrumb-item">
+          <a href="charts.html">Charts</a>
+        </li>
+        <li class="breadcrumb-item active">Measures</li>
       </ol>
-      <!-- Example DataTables Card-->
+      <!-- Line Chart -->
       <div class="card mb-3">
-        <!-- div class="card-header">
-          <i class="fa fa-table"></i> Data Table Example
-        </div -->
+        <div class="card-header">
+          <i class="fa fa-area-chart"></i> Degrees</div>
         <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-              <thead>
-                <tr><th>Year</th><th>Degrees</th><th>Change-%</th><th>Students</th><th>Change-%</th><th>New</th><th>Change-%</th></tr>
-              </thead>
-              <!-- data loaded with Ajax -->
-            </table>
-          </div>
+          <canvas id="degreesLineChart" width="100%" height="30"></canvas>
+        </div>
+        <!-- div class="card-footer small text-muted">Updated sometime AM</div -->
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-area-chart"></i> Students</div>
+        <div class="card-body">
+          <canvas id="studentsLineChart" width="100%" height="30"></canvas>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-area-chart"></i> New</div>
+        <div class="card-body">
+          <canvas id="newLineChart" width="100%" height="30"></canvas>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-area-chart"></i> Present</div>
+        <div class="card-body">
+          <canvas id="presentLineChart" width="100%" height="30"></canvas>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-area-chart"></i> FTE</div>
+        <div class="card-body">
+          <canvas id="fteLineChart" width="100%" height="30"></canvas>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-area-chart"></i> 55sp</div>
+        <div class="card-body">
+          <canvas id="fivefiveLineChart" width="100%" height="30"></canvas>
         </div>
       </div>
     </div>
@@ -131,13 +160,11 @@
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <!-- Page level plugin JavaScript-->
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin.js"></script>
     <!-- Custom scripts for this page-->
-    <script src="js/sb-admin-datatables.js"></script>
-
+    <script src="js/sb-admin-measures.js"></script>
   </div>
 </body>
 

@@ -8,7 +8,11 @@ $(document).ready(function() {
     "columns": [
       { "data": "vuosi" },
       { "data": "tutkinnot" },
-      { "data": "tutkinnot_pros" }
+      { "data": "tutkinnot_pros" },
+      { "data": "opiskelijat" },
+      { "data": "opiskelijat_pros" },
+      { "data": "aloittaneet" },
+      { "data": "aloittaneet_pros" },
     ],
     "order": [[0,"desc"]]
   });
