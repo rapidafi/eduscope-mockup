@@ -77,6 +77,17 @@
         </li>
         <li class="breadcrumb-item active">Measures</li>
       </ol>
+
+      <!-- Bullet Chart -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-area-chart"></i> Education</div>
+        <div class="card-body">
+          <div id="jqxBulletChart"></div>
+        </div>
+        <!-- div class="card-footer small text-muted">Updated sometime AM</div -->
+      </div>
+
       <!-- Line Chart -->
       <div class="card mb-3">
         <div class="card-header">
@@ -165,6 +176,59 @@
     <script src="js/sb-admin.js"></script>
     <!-- Custom scripts for this page-->
     <script src="js/sb-admin-measures.js"></script>
+
+
+
+          <script type="text/javascript" src="vendor/jqwidgets/jqxcore.js"></script>
+          <script type="text/javascript" src="vendor/jqwidgets/jqxdata.js"></script>
+          <script type="text/javascript" src="vendor/jqwidgets/jqxbulletchart.js"></script>
+          <script type="text/javascript" src="vendor/jqwidgets/jqxtooltip.js"></script>
+          <link href="vendor/jqwidgets/jqx.base.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+  $(document).ready(function () {
+    $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Saimaan%20ammattikorkeakoulu", function( data ) {
+      var eduscope = {};
+      eduscope.labels = [];
+      eduscope.degrees = [];
+      $.each( data, function( key, val ) {
+        eduscope.labels.push(val.vuosi);
+        eduscope.degrees.push(+val.tutkinnot);
+        if (val.vuosi==2015) {
+          eduscope.year_begin = +val.vuosi;
+          eduscope.degree_begin = +val.tutkinnot;
+        }
+        if (val.vuosi==2016) {
+          eduscope.year_end = +val.vuosi;
+          eduscope.degree_end = +val.tutkinnot;
+        }
+      });
+      console.debug("jqx",eduscope,Math.ceil((eduscope.degree_begin+(eduscope.degree_begin/100*10))/100)*100)
+      $("#jqxBulletChart").jqxBulletChart({
+          width: 500,
+          height: 80,
+          barSize: "40%",
+          title: "Degrees",
+          description: "Years "+eduscope.year_begin+"-"+eduscope.year_end,
+          ranges: [
+              { startValue: 0,
+                endValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*30))/100)*100,
+                color: "steelblue", opacity: 0.5 },
+              { startValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*30))/100)*100,
+                endValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*10))/100)*100,
+                color: "steelblue", opacity: 0.3 },
+              { startValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*10))/100)*100,
+                endValue: Math.ceil((eduscope.degree_begin+(eduscope.degree_begin/100*5))/100)*100,
+                color: "steelblue", opacity: 0.1 }
+          ],
+          pointer: { value: eduscope.degree_end, label: "Degrees "+eduscope.year_end, size: "25%", color: "black" },
+          target: { value: eduscope.degree_begin, label: "Degrees "+eduscope.year_begin, size: 4, color: "black" },
+          ticks: { position: "both", interval: 200, size: 10 },
+          labelsFormat: "",
+          showTooltip: true
+      });
+    });
+  });
+</script>
   </div>
 </body>
 
