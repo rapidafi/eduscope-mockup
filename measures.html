@@ -80,8 +80,7 @@
 
       <!-- Bullet Chart -->
       <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-area-chart"></i> Education</div>
+        <div class="card-header"><i class="fa fa-area-chart"></i> Education</div>
         <div class="card-body">
           <div id="jqxBulletChart"></div>
         </div>
@@ -90,44 +89,38 @@
 
       <!-- Line Chart -->
       <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-area-chart"></i> Degrees</div>
+        <div class="card-header"><i class="fa fa-area-chart"></i> Degrees</div>
         <div class="card-body">
           <canvas id="degreesLineChart" width="100%" height="30"></canvas>
         </div>
         <!-- div class="card-footer small text-muted">Updated sometime AM</div -->
       </div>
       <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-area-chart"></i> Students</div>
+        <div class="card-header"><i class="fa fa-area-chart"></i> Students</div>
         <div class="card-body">
           <canvas id="studentsLineChart" width="100%" height="30"></canvas>
         </div>
       </div>
       <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-area-chart"></i> New</div>
+        <div class="card-header"><i class="fa fa-area-chart"></i> New</div>
         <div class="card-body">
           <canvas id="newLineChart" width="100%" height="30"></canvas>
         </div>
       </div>
       <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-area-chart"></i> Present</div>
+        <div class="card-header"><i class="fa fa-area-chart"></i> Present</div>
         <div class="card-body">
           <canvas id="presentLineChart" width="100%" height="30"></canvas>
         </div>
       </div>
       <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-area-chart"></i> FTE</div>
+        <div class="card-header"><i class="fa fa-area-chart"></i> FTE</div>
         <div class="card-body">
           <canvas id="fteLineChart" width="100%" height="30"></canvas>
         </div>
       </div>
       <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-area-chart"></i> 55sp</div>
+        <div class="card-header"><i class="fa fa-area-chart"></i> 55sp</div>
         <div class="card-body">
           <canvas id="fivefiveLineChart" width="100%" height="30"></canvas>
         </div>
@@ -202,30 +195,44 @@
           eduscope.degree_end = +val.tutkinnot;
         }
       });
-      console.debug("jqx",eduscope,Math.ceil((eduscope.degree_begin+(eduscope.degree_begin/100*10))/100)*100)
-      $("#jqxBulletChart").jqxBulletChart({
-          width: 500,
-          height: 80,
-          barSize: "40%",
-          title: "Degrees",
-          description: "Years "+eduscope.year_begin+"-"+eduscope.year_end,
-          ranges: [
-              { startValue: 0,
-                endValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*30))/100)*100,
-                color: "steelblue", opacity: 0.5 },
-              { startValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*30))/100)*100,
-                endValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*10))/100)*100,
-                color: "steelblue", opacity: 0.3 },
-              { startValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*10))/100)*100,
-                endValue: Math.ceil((eduscope.degree_begin+(eduscope.degree_begin/100*5))/100)*100,
-                color: "steelblue", opacity: 0.1 }
-          ],
-          pointer: { value: eduscope.degree_end, label: "Degrees "+eduscope.year_end, size: "25%", color: "black" },
-          target: { value: eduscope.degree_begin, label: "Degrees "+eduscope.year_begin, size: 4, color: "black" },
-          ticks: { position: "both", interval: 200, size: 10 },
-          labelsFormat: "",
-          showTooltip: true
+      //console.debug("jqx",eduscope,Math.ceil((eduscope.degree_begin+(eduscope.degree_begin/100*10))/100)*100)
+      // resize responsively:
+      function resize() {
+        // resizing
+        var bulletplace = $("#jqxBulletChart")
+        var width = '100%',
+            height = 80;
+        //console.debug("resize",width,bulletplace)
+        bulletplace.jqxBulletChart({
+            width: width,
+            height: height,
+            barSize: "40%",
+            title: "Degrees",
+            description: "Years "+eduscope.year_begin+"-"+eduscope.year_end,
+            ranges: [
+                { startValue: 0,
+                  endValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*30))/100)*100,
+                  color: "steelblue", opacity: 0.5 },
+                { startValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*30))/100)*100,
+                  endValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*10))/100)*100,
+                  color: "steelblue", opacity: 0.3 },
+                { startValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*10))/100)*100,
+                  endValue: Math.ceil((eduscope.degree_begin+(eduscope.degree_begin/100*5))/100)*100,
+                  color: "steelblue", opacity: 0.1 }
+            ],
+            pointer: { value: eduscope.degree_end, label: "Degrees "+eduscope.year_end, size: "25%", color: "black" },
+            target: { value: eduscope.degree_begin, label: "Degrees "+eduscope.year_begin, size: 4, color: "black" },
+            ticks: { position: "both", interval: 200, size: 10 },
+            labelsFormat: "",
+            showTooltip: true
+        });
+
+      }
+      $(window)
+        .on("resize", function() {
+          resize();
       });
+      resize();
     });
   });
 </script>
