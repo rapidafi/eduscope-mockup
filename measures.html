@@ -82,7 +82,8 @@
       <div class="card mb-3">
         <div class="card-header"><i class="fa fa-area-chart"></i> Education</div>
         <div class="card-body">
-          <div id="jqxBulletChart"></div>
+          <div id="jqxBulletChart_degrees"></div>
+          <div id="jqxBulletChart_students"></div>
         </div>
         <!-- div class="card-footer small text-muted">Updated sometime AM</div -->
       </div>
@@ -179,27 +180,22 @@
           <link href="vendor/jqwidgets/jqx.base.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
   $(document).ready(function () {
-    $.getJSON( "https://sa.rapida.fi/eduscope.php/eduscope_education/korkeakoulu=Saimaan%20ammattikorkeakoulu", function( data ) {
+    $.getJSON( "https://sa.rapida.fi/eduscope_v201710.php/hei_bullet/mittari=tutkinnot/nimi=Saimaan%20ammattikorkeakoulu/vuosi=2016", function( data ) {
       var eduscope = {};
-      eduscope.labels = [];
-      eduscope.degrees = [];
       $.each( data, function( key, val ) {
-        eduscope.labels.push(val.vuosi);
-        eduscope.degrees.push(+val.tutkinnot);
-        if (val.vuosi==2015) {
-          eduscope.year_begin = +val.vuosi;
-          eduscope.degree_begin = +val.tutkinnot;
-        }
-        if (val.vuosi==2016) {
-          eduscope.year_end = +val.vuosi;
-          eduscope.degree_end = +val.tutkinnot;
-        }
+        eduscope.label = +val.vuosi;
+        eduscope.measure = +val.arvo;
+        eduscope.target = +val.tavoite;
+        eduscope.min = +val.minimi;
+        eduscope.range1 = +val.raja1;
+        eduscope.range2 = +val.raja2;
+        eduscope.max = +val.maksimi;
       });
-      //console.debug("jqx",eduscope,Math.ceil((eduscope.degree_begin+(eduscope.degree_begin/100*10))/100)*100)
+      console.debug("jqx",eduscope)
       // resize responsively:
       function resize() {
         // resizing
-        var bulletplace = $("#jqxBulletChart")
+        var bulletplace = $("#jqxBulletChart_degrees")
         var width = '100%',
             height = 80;
         //console.debug("resize",width,bulletplace)
@@ -208,21 +204,66 @@
             height: height,
             barSize: "40%",
             title: "Degrees",
-            description: "Years "+eduscope.year_begin+"-"+eduscope.year_end,
+            description: "Year "+eduscope.label,
             ranges: [
-                { startValue: 0,
-                  endValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*30))/100)*100,
-                  color: "steelblue", opacity: 0.5 },
-                { startValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*30))/100)*100,
-                  endValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*10))/100)*100,
-                  color: "steelblue", opacity: 0.3 },
-                { startValue: Math.floor((eduscope.degree_begin-(eduscope.degree_begin/100*10))/100)*100,
-                  endValue: Math.ceil((eduscope.degree_begin+(eduscope.degree_begin/100*5))/100)*100,
-                  color: "steelblue", opacity: 0.1 }
+                { startValue: eduscope.min,  endValue: eduscope.range1, color: "steelblue", opacity: 0.5 },
+                { startValue: eduscope.range1, endValue: eduscope.range2, color: "steelblue", opacity: 0.3 },
+                { startValue: eduscope.range2, endValue: eduscope.max, color: "steelblue", opacity: 0.1 }
             ],
-            pointer: { value: eduscope.degree_end, label: "Degrees "+eduscope.year_end, size: "25%", color: "black" },
-            target: { value: eduscope.degree_begin, label: "Degrees "+eduscope.year_begin, size: 4, color: "black" },
-            ticks: { position: "both", interval: 200, size: 10 },
+            pointer: { value: eduscope.measure, label: "Degrees "+eduscope.label, size: "25%", color: "black" },
+            target: { value: eduscope.target, label: "Target "+eduscope.label, size: 4, color: "black" },
+            ticks: { position: "far", interval: Math.floor(eduscope.max/5/100)*100, size: 10 },
+            labelsFormat: "",
+            showTooltip: true
+        });
+
+      }
+      $(window)
+        .on("resize", function() {
+          resize();
+      });
+      resize();
+    });
+  });
+
+
+  $(document).ready(function () {
+    $.getJSON( "https://sa.rapida.fi/eduscope_v201710.php/hei_bullet/mittari=opiskelijat/nimi=Saimaan%20ammattikorkeakoulu/vuosi=2016", function( data ) {
+      var eduscope = {};
+      $.each( data, function( key, val ) {
+        eduscope.title = 'Students';
+        eduscope.year = +val.vuosi;
+        eduscope.measure_label = eduscope.title+' '+eduscope.year;
+        eduscope.target_label = 'Target '+eduscope.year;
+        eduscope.measure = +val.arvo;
+        eduscope.target = +val.tavoite;
+        eduscope.min = +val.minimi;
+        eduscope.range1 = +val.raja1;
+        eduscope.range2 = +val.raja2;
+        eduscope.max = +val.maksimi;
+      });
+      console.debug("jqx",eduscope)
+      // resize responsively:
+      function resize() {
+        // resizing
+        var bulletplace = $("#jqxBulletChart_students")
+        var width = '100%',
+            height = 80;
+        //console.debug("resize",width,bulletplace)
+        bulletplace.jqxBulletChart({
+            width: width,
+            height: height,
+            barSize: "40%",
+            title: eduscope.title,
+            description: "Year "+eduscope.year,
+            ranges: [
+                { startValue: eduscope.min, endValue: eduscope.range1, color: "steelblue", opacity: 0.5 },
+                { startValue: eduscope.range1, endValue: eduscope.range2, color: "steelblue", opacity: 0.3 },
+                { startValue: eduscope.range2, endValue: eduscope.max, color: "steelblue", opacity: 0.1 }
+            ],
+            pointer: { value: eduscope.measure, label: eduscope.measure_label, size: "25%", color: "black" },
+            target: { value: eduscope.target, label: eduscope.target_label, size: 4, color: "black" },
+            ticks: { position: "far", interval: Math.floor(eduscope.max/5/100)*100, size: 10 },
             labelsFormat: "",
             showTooltip: true
         });
