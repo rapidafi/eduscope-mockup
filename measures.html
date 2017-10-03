@@ -183,7 +183,11 @@
     $.getJSON( "https://sa.rapida.fi/eduscope_v201710.php/hei_bullet/mittari=tutkinnot/nimi=Saimaan%20ammattikorkeakoulu/vuosi=2016", function( data ) {
       var eduscope = {};
       $.each( data, function( key, val ) {
-        eduscope.label = +val.vuosi;
+        eduscope.year = +val.vuosi;
+        eduscope.title = 'Degrees';
+        eduscope.description = 'count';
+        eduscope.measure_label = eduscope.title+' '+eduscope.year;
+        eduscope.target_label = 'Target '+eduscope.year;
         eduscope.measure = +val.arvo;
         eduscope.target = +val.tavoite;
         eduscope.min = +val.minimi;
@@ -199,20 +203,21 @@
         var width = '100%',
             height = 80;
         //console.debug("resize",width,bulletplace)
+        $("#jqbcDegrTitle").text(eduscope.measure_label);
         bulletplace.jqxBulletChart({
             width: width,
             height: height,
             barSize: "40%",
-            title: "Degrees",
-            description: "Year "+eduscope.label,
+            title: eduscope.title,
+            description: eduscope.description,
             ranges: [
                 { startValue: eduscope.min,  endValue: eduscope.range1, color: "steelblue", opacity: 0.5 },
                 { startValue: eduscope.range1, endValue: eduscope.range2, color: "steelblue", opacity: 0.3 },
                 { startValue: eduscope.range2, endValue: eduscope.max, color: "steelblue", opacity: 0.1 }
             ],
-            pointer: { value: eduscope.measure, label: "Degrees "+eduscope.label, size: "25%", color: "black" },
-            target: { value: eduscope.target, label: "Target "+eduscope.label, size: 4, color: "black" },
-            ticks: { position: "far", interval: Math.floor(eduscope.max/5/100)*100, size: 10 },
+            pointer: { value: eduscope.measure, label: eduscope.measure_label, size: "25%", color: "black" },
+            target: { value: eduscope.target, label: eduscope.target_label, size: 4, color: "black" },
+            ticks: { position: "far", interval: Math.floor(eduscope.max/4/100)*100, size: 10 },
             labelsFormat: "",
             showTooltip: true
         });
@@ -231,8 +236,9 @@
     $.getJSON( "https://sa.rapida.fi/eduscope_v201710.php/hei_bullet/mittari=opiskelijat/nimi=Saimaan%20ammattikorkeakoulu/vuosi=2016", function( data ) {
       var eduscope = {};
       $.each( data, function( key, val ) {
-        eduscope.title = 'Students';
         eduscope.year = +val.vuosi;
+        eduscope.title = 'Students';
+        eduscope.description = 'count';
         eduscope.measure_label = eduscope.title+' '+eduscope.year;
         eduscope.target_label = 'Target '+eduscope.year;
         eduscope.measure = +val.arvo;
@@ -250,12 +256,13 @@
         var width = '100%',
             height = 80;
         //console.debug("resize",width,bulletplace)
+        $("#jqbcStudTitle").text(eduscope.measure_label);
         bulletplace.jqxBulletChart({
             width: width,
             height: height,
             barSize: "40%",
             title: eduscope.title,
-            description: "Year "+eduscope.year,
+            description: eduscope.description,
             ranges: [
                 { startValue: eduscope.min, endValue: eduscope.range1, color: "steelblue", opacity: 0.5 },
                 { startValue: eduscope.range1, endValue: eduscope.range2, color: "steelblue", opacity: 0.3 },
@@ -263,11 +270,10 @@
             ],
             pointer: { value: eduscope.measure, label: eduscope.measure_label, size: "25%", color: "black" },
             target: { value: eduscope.target, label: eduscope.target_label, size: 4, color: "black" },
-            ticks: { position: "far", interval: Math.floor(eduscope.max/5/100)*100, size: 10 },
+            ticks: { position: "far", interval: Math.floor(eduscope.max/4/100)*100, size: 10 },
             labelsFormat: "",
             showTooltip: true
         });
-
       }
       $(window)
         .on("resize", function() {
@@ -277,6 +283,11 @@
     });
   });
 </script>
+<style>
+div.jqx-bulletchart-title {
+  width: 90px;
+}
+</style>
   </div>
 </body>
 
