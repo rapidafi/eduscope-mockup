@@ -205,21 +205,21 @@
         //console.debug("resize",width,bulletplace)
         $("#jqbcDegrTitle").text(eduscope.measure_label);
         bulletplace.jqxBulletChart({
-            width: width,
-            height: height,
-            barSize: "40%",
-            title: eduscope.title,
-            description: eduscope.description,
-            ranges: [
-                { startValue: eduscope.min,  endValue: eduscope.range1, color: "steelblue", opacity: 0.5 },
-                { startValue: eduscope.range1, endValue: eduscope.range2, color: "steelblue", opacity: 0.3 },
-                { startValue: eduscope.range2, endValue: eduscope.max, color: "steelblue", opacity: 0.1 }
-            ],
-            pointer: { value: eduscope.measure, label: eduscope.measure_label, size: "25%", color: "black" },
-            target: { value: eduscope.target, label: eduscope.target_label, size: 4, color: "black" },
-            ticks: { position: "far", interval: Math.floor(eduscope.max/4/100)*100, size: 10 },
-            labelsFormat: "",
-            showTooltip: true
+          width: width,
+          height: height,
+          barSize: "40%",
+          title: eduscope.title,
+          description: eduscope.description,
+          ranges: [
+            { startValue: eduscope.min,  endValue: eduscope.range1, color: "steelblue", opacity: 0.5 },
+            { startValue: eduscope.range1, endValue: eduscope.range2, color: "steelblue", opacity: 0.3 },
+            { startValue: eduscope.range2, endValue: eduscope.max, color: "steelblue", opacity: 0.1 }
+          ],
+          pointer: { value: eduscope.measure, label: eduscope.measure_label, size: "25%", color: "black" },
+          target: { value: eduscope.target, label: eduscope.target_label, size: 4, color: "black" },
+          ticks: { position: "far", interval: Math.floor(eduscope.max/4/100)*100, size: 10 },
+          labelsFormat: "",
+          showTooltip: true
         });
 
       }
@@ -258,21 +258,21 @@
         //console.debug("resize",width,bulletplace)
         $("#jqbcStudTitle").text(eduscope.measure_label);
         bulletplace.jqxBulletChart({
-            width: width,
-            height: height,
-            barSize: "40%",
-            title: eduscope.title,
-            description: eduscope.description,
-            ranges: [
-                { startValue: eduscope.min, endValue: eduscope.range1, color: "steelblue", opacity: 0.5 },
-                { startValue: eduscope.range1, endValue: eduscope.range2, color: "steelblue", opacity: 0.3 },
-                { startValue: eduscope.range2, endValue: eduscope.max, color: "steelblue", opacity: 0.1 }
-            ],
-            pointer: { value: eduscope.measure, label: eduscope.measure_label, size: "25%", color: "black" },
-            target: { value: eduscope.target, label: eduscope.target_label, size: 4, color: "black" },
-            ticks: { position: "far", interval: Math.floor(eduscope.max/4/100)*100, size: 10 },
-            labelsFormat: "",
-            showTooltip: true
+          width: width,
+          height: height,
+          barSize: "40%",
+          title: eduscope.title,
+          description: eduscope.description,
+          ranges: [
+            { startValue: eduscope.min, endValue: eduscope.range1, color: "steelblue", opacity: 0.5 },
+            { startValue: eduscope.range1, endValue: eduscope.range2, color: "steelblue", opacity: 0.3 },
+            { startValue: eduscope.range2, endValue: eduscope.max, color: "steelblue", opacity: 0.1 }
+          ],
+          pointer: { value: eduscope.measure, label: eduscope.measure_label, size: "25%", color: "black" },
+          target: { value: eduscope.target, label: eduscope.target_label, size: 4, color: "black" },
+          ticks: { position: "far", interval: Math.floor(eduscope.max/4/100)*100, size: 10 },
+          labelsFormat: "",
+          showTooltip: true
         });
       }
       $(window)
