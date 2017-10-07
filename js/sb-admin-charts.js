@@ -3,7 +3,7 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
-$.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi=02609", function( data ) {
+$.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
   var eduscope = {};
   eduscope.labels = [];
   eduscope.degrees = [];
@@ -20,7 +20,7 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/
     eduscope.present.push(val.opiskelijat_lasna);
     eduscope.fte.push(val.opiskelijat_fte);
     eduscope.fivefive.push(val.opiskelijat_viisviis);
-    if (val.vuosi==2016) {
+    if (val.vuosi==qYear) {
       eduscope.sel_year = val.vuosi;
       eduscope.sel_degree = val.tutkinnot;
       eduscope.sel_student = val.opiskelijat;

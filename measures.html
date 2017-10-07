@@ -180,20 +180,20 @@
           <link href="vendor/jqwidgets/jqx.base.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
   $(document).ready(function () {
-    $.getJSON( "https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittari=tutkinnot/nimi=Saimaan%20ammattikorkeakoulu/vuosi=2016", function( data ) {
+    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=tutkinnot/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
       var eduscope = {};
       $.each( data, function( key, val ) {
-        eduscope.year = +val.vuosi;
+        eduscope.year = val.vuosi;
         eduscope.title = 'Degrees';
         eduscope.description = 'count';
         eduscope.measure_label = eduscope.title+' '+eduscope.year;
         eduscope.target_label = 'Target '+eduscope.year;
-        eduscope.measure = +val.arvo;
-        eduscope.target = +val.tavoite;
-        eduscope.min = +val.minimi;
-        eduscope.range1 = +val.raja1;
-        eduscope.range2 = +val.raja2;
-        eduscope.max = +val.maksimi;
+        eduscope.measure = val.arvo;
+        eduscope.target = val.tavoite;
+        eduscope.min = val.minimi;
+        eduscope.range1 = val.raja1;
+        eduscope.range2 = val.raja2;
+        eduscope.max = Math.max(val.maksimi,val.tavoite); // sometimes target is more than evaluated max)
       });
       console.debug("jqx",eduscope)
       // resize responsively:
@@ -233,7 +233,7 @@
 
 
   $(document).ready(function () {
-    $.getJSON( "https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittari=opiskelijat/nimi=Saimaan%20ammattikorkeakoulu/vuosi=2016", function( data ) {
+    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=opiskelijat/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
       var eduscope = {};
       $.each( data, function( key, val ) {
         eduscope.year = +val.vuosi;
@@ -241,12 +241,12 @@
         eduscope.description = 'count';
         eduscope.measure_label = eduscope.title+' '+eduscope.year;
         eduscope.target_label = 'Target '+eduscope.year;
-        eduscope.measure = +val.arvo;
+        eduscope.measure = val.arvo;
         eduscope.target = +val.tavoite;
-        eduscope.min = +val.minimi;
-        eduscope.range1 = +val.raja1;
-        eduscope.range2 = +val.raja2;
-        eduscope.max = +val.maksimi;
+        eduscope.min = val.minimi;
+        eduscope.range1 = val.raja1;
+        eduscope.range2 = val.raja2;
+        eduscope.max = Math.max(val.maksimi,val.tavoite); // sometimes target is more than evaluated max)
       });
       console.debug("jqx",eduscope)
       // resize responsively:

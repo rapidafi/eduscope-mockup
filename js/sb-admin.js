@@ -43,3 +43,45 @@
     event.preventDefault();
   });
 })(jQuery); // End of use strict
+
+// Credits: http://stackoverflow.com/a/979995
+var QueryString = function () {
+  // This function is anonymous, is executed immediately and
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+        // If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = decodeURIComponent(pair[1]);
+        // If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+      query_string[pair[0]] = arr;
+        // If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+    }
+  }
+  return query_string;
+}();
+
+// globally used variables (filters):
+// TODO remove default values when overall system is ready for it
+let qOrganization="02609"; // oppilaitosnumero, "02609"
+let qYear=2016; // vuosi, 2016
+let qOKM="1"; // OKM ohjauksen ala, "1"
+if (QueryString) {
+  //console.debug(QueryString);
+  if (QueryString.organization) {
+    qOrganization=QueryString.organization;
+  }
+  if (QueryString.year) {
+    qYear=QueryString.year;
+  }
+  if (QueryString.okm) {
+    qOKM=QueryString.okm;
+  }
+}
