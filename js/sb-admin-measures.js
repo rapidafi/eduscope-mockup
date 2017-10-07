@@ -14,20 +14,20 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/
   eduscope.fivefive = [];
   $.each( data, function( key, val ) {
     eduscope.labels.push(val.vuosi);
-    eduscope.degrees.push(+val.tutkinnot);
-    eduscope.students.push(+val.opiskelijat);
-    eduscope.new.push(+val.aloittaneet);
-    eduscope.present.push(+val.opiskelijat_lasna);
-    eduscope.fte.push(+val.opiskelijat_fte);
-    eduscope.fivefive.push(+val.opiskelijat_viisviis);
+    eduscope.degrees.push(val.tutkinnot);
+    eduscope.students.push(val.opiskelijat);
+    eduscope.new.push(val.aloittaneet);
+    eduscope.present.push(val.opiskelijat_lasna);
+    eduscope.fte.push(val.opiskelijat_fte);
+    eduscope.fivefive.push(val.opiskelijat_viisviis);
     if (val.vuosi==2016) {
-      eduscope.sel_year = +val.vuosi;
-      eduscope.sel_degree = +val.tutkinnot;
-      eduscope.sel_student = +val.opiskelijat;
-      eduscope.sel_new = +val.aloittaneet;
-      eduscope.sel_present = +val.opiskelijat_lasna;
-      eduscope.sel_fte = +val.opiskelijat_fte;
-      eduscope.sel_fivefive = +val.opiskelijat_viisviis;
+      eduscope.sel_year = val.vuosi;
+      eduscope.sel_degree = val.tutkinnot;
+      eduscope.sel_student = val.opiskelijat;
+      eduscope.sel_new = val.aloittaneet;
+      eduscope.sel_present = val.opiskelijat_lasna;
+      eduscope.sel_fte = val.opiskelijat_fte;
+      eduscope.sel_fivefive = val.opiskelijat_viisviis;
     }
   });
   eduscope.min_degree = eduscope.degrees.reduce(function(a, b) { return Math.min(a, b); });
