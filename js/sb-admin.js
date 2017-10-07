@@ -68,7 +68,7 @@ var QueryString = function () {
   return query_string;
 }();
 
-// globally used variables (filters):
+// globally used variables (filters) from arguments (query string):
 // TODO remove default values when overall system is ready for it
 let qOrganization="02609"; // oppilaitosnumero, "02609"
 let qYear=2016; // vuosi, 2016
@@ -85,3 +85,13 @@ if (QueryString) {
     qOKM=QueryString.okm;
   }
 }
+
+// pass arguments on:
+$(document).ready(function () {
+  $('a.nav-link').each(function(){
+    var oldurl = $(this).attr('href');
+    if(oldurl){//skip some unwanted
+      $(this).attr('href',oldurl+"?organization="+qOrganization+"&year="+qYear);
+    }
+  });
+});
