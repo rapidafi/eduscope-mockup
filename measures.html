@@ -84,6 +84,10 @@
         <div class="card-body">
           <div id="jqxBulletChart_degrees"></div>
           <div id="jqxBulletChart_students"></div>
+          <div id="jqxBulletChart_new"></div>
+          <div id="jqxBulletChart_present"></div>
+          <div id="jqxBulletChart_fte"></div>
+          <div id="jqxBulletChart_fivefive"></div>
         </div>
         <!-- div class="card-footer small text-muted">Updated sometime AM</div -->
       </div>
@@ -179,107 +183,73 @@
           <script type="text/javascript" src="vendor/jqwidgets/jqxtooltip.js"></script>
           <link href="vendor/jqwidgets/jqx.base.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
+function makeBulletGraph(partialId,title,data) {
+    var eduscope = {};
+    $.each( data, function( key, val ) {
+      eduscope.year = +val.vuosi;
+      eduscope.title = title;
+      eduscope.description = 'count';
+      eduscope.measure_label = eduscope.title+' '+eduscope.year;
+      eduscope.target_label = 'Target '+eduscope.year;
+      eduscope.measure = val.arvo;
+      eduscope.target = +val.tavoite;
+      eduscope.min = val.minimi;
+      eduscope.range1 = val.raja1;
+      eduscope.range2 = val.raja2;
+      eduscope.max = Math.max(val.maksimi,val.tavoite); // sometimes target is more than evaluated max)
+    });
+    console.debug("jqx",eduscope)
+    // resize responsively:
+    function resize() {
+      // resizing
+      var bulletplace = $("#jqxBulletChart_"+partialId)
+      var width = '100%',
+          height = 80;
+      //console.debug("resize",width,bulletplace)
+      //$("#jqbcStudTitle").text(eduscope.measure_label);
+      bulletplace.jqxBulletChart({
+        width: width,
+        height: height,
+        barSize: "40%",
+        title: eduscope.title,
+        description: eduscope.description,
+        ranges: [
+          { startValue: eduscope.min, endValue: eduscope.range1, color: "steelblue", opacity: 0.5 },
+          { startValue: eduscope.range1, endValue: eduscope.range2, color: "steelblue", opacity: 0.3 },
+          { startValue: eduscope.range2, endValue: eduscope.max, color: "steelblue", opacity: 0.1 }
+        ],
+        pointer: { value: eduscope.measure, label: eduscope.measure_label, size: "25%", color: "black" },
+        target: { value: eduscope.target, label: eduscope.target_label, size: 4, color: "black" },
+        ticks: { position: "far", interval: Math.floor(eduscope.max/4/100)*100, size: 10 },
+        labelsFormat: "",
+        showTooltip: true
+      });
+    }
+    $(window)
+      .on("resize", function() {
+        resize();
+    });
+    resize();
+}
+
   $(document).ready(function () {
     $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=tutkinnot/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
-      var eduscope = {};
-      $.each( data, function( key, val ) {
-        eduscope.year = val.vuosi;
-        eduscope.title = 'Degrees';
-        eduscope.description = 'count';
-        eduscope.measure_label = eduscope.title+' '+eduscope.year;
-        eduscope.target_label = 'Target '+eduscope.year;
-        eduscope.measure = val.arvo;
-        eduscope.target = val.tavoite;
-        eduscope.min = val.minimi;
-        eduscope.range1 = val.raja1;
-        eduscope.range2 = val.raja2;
-        eduscope.max = Math.max(val.maksimi,val.tavoite); // sometimes target is more than evaluated max)
-      });
-      console.debug("jqx",eduscope)
-      // resize responsively:
-      function resize() {
-        // resizing
-        var bulletplace = $("#jqxBulletChart_degrees")
-        var width = '100%',
-            height = 80;
-        //console.debug("resize",width,bulletplace)
-        $("#jqbcDegrTitle").text(eduscope.measure_label);
-        bulletplace.jqxBulletChart({
-          width: width,
-          height: height,
-          barSize: "40%",
-          title: eduscope.title,
-          description: eduscope.description,
-          ranges: [
-            { startValue: eduscope.min,  endValue: eduscope.range1, color: "steelblue", opacity: 0.5 },
-            { startValue: eduscope.range1, endValue: eduscope.range2, color: "steelblue", opacity: 0.3 },
-            { startValue: eduscope.range2, endValue: eduscope.max, color: "steelblue", opacity: 0.1 }
-          ],
-          pointer: { value: eduscope.measure, label: eduscope.measure_label, size: "25%", color: "black" },
-          target: { value: eduscope.target, label: eduscope.target_label, size: 4, color: "black" },
-          ticks: { position: "far", interval: Math.floor(eduscope.max/4/100)*100, size: 10 },
-          labelsFormat: "",
-          showTooltip: true
-        });
-
-      }
-      $(window)
-        .on("resize", function() {
-          resize();
-      });
-      resize();
+      makeBulletGraph("degrees","Degrees",data);
     });
-  });
-
-
-  $(document).ready(function () {
     $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=opiskelijat/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
-      var eduscope = {};
-      $.each( data, function( key, val ) {
-        eduscope.year = +val.vuosi;
-        eduscope.title = 'Students';
-        eduscope.description = 'count';
-        eduscope.measure_label = eduscope.title+' '+eduscope.year;
-        eduscope.target_label = 'Target '+eduscope.year;
-        eduscope.measure = val.arvo;
-        eduscope.target = +val.tavoite;
-        eduscope.min = val.minimi;
-        eduscope.range1 = val.raja1;
-        eduscope.range2 = val.raja2;
-        eduscope.max = Math.max(val.maksimi,val.tavoite); // sometimes target is more than evaluated max)
-      });
-      console.debug("jqx",eduscope)
-      // resize responsively:
-      function resize() {
-        // resizing
-        var bulletplace = $("#jqxBulletChart_students")
-        var width = '100%',
-            height = 80;
-        //console.debug("resize",width,bulletplace)
-        $("#jqbcStudTitle").text(eduscope.measure_label);
-        bulletplace.jqxBulletChart({
-          width: width,
-          height: height,
-          barSize: "40%",
-          title: eduscope.title,
-          description: eduscope.description,
-          ranges: [
-            { startValue: eduscope.min, endValue: eduscope.range1, color: "steelblue", opacity: 0.5 },
-            { startValue: eduscope.range1, endValue: eduscope.range2, color: "steelblue", opacity: 0.3 },
-            { startValue: eduscope.range2, endValue: eduscope.max, color: "steelblue", opacity: 0.1 }
-          ],
-          pointer: { value: eduscope.measure, label: eduscope.measure_label, size: "25%", color: "black" },
-          target: { value: eduscope.target, label: eduscope.target_label, size: 4, color: "black" },
-          ticks: { position: "far", interval: Math.floor(eduscope.max/4/100)*100, size: 10 },
-          labelsFormat: "",
-          showTooltip: true
-        });
-      }
-      $(window)
-        .on("resize", function() {
-          resize();
-      });
-      resize();
+      makeBulletGraph("students","Students",data);
+    });
+    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=aloittaneet/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
+      makeBulletGraph("new","New",data);
+    });
+    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=opiskelijat_lasna/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
+      makeBulletGraph("present","Present",data);
+    });
+    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=opiskelijat_fte/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
+      makeBulletGraph("fte","FTE",data);
+    });
+    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=opiskelijat_viisviis/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
+      makeBulletGraph("fivefive","55sp",data);
     });
   });
 </script>
