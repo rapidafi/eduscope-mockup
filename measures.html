@@ -75,7 +75,7 @@
         <li class="breadcrumb-item">
           <a href="charts.html">Charts</a>
         </li>
-        <li class="breadcrumb-item active">Measures</li>
+        <li class="breadcrumb-item active">Measures for <span id="title_org"></span></li>
       </ol>
 
       <!-- Bullet Chart -->
@@ -183,9 +183,9 @@
           <script type="text/javascript" src="vendor/jqwidgets/jqxtooltip.js"></script>
           <link href="vendor/jqwidgets/jqx.base.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
-function makeBulletGraph(partialId,title,data) {
+function makeBulletGraph(partialId,title,val) {
     var eduscope = {};
-    $.each( data, function( key, val ) {
+    //$.each( data, function( key, val ) {
       eduscope.year = +val.vuosi;
       eduscope.title = title;
       eduscope.description = 'count';
@@ -197,8 +197,8 @@ function makeBulletGraph(partialId,title,data) {
       eduscope.range1 = val.raja1;
       eduscope.range2 = val.raja2;
       eduscope.max = Math.max(val.maksimi,val.tavoite); // sometimes target is more than evaluated max)
-    });
-    console.debug("jqx",eduscope)
+    //});
+    //console.debug("jqx",eduscope)
     // resize responsively:
     function resize() {
       // resizing
@@ -233,23 +233,27 @@ function makeBulletGraph(partialId,title,data) {
 }
 
   $(document).ready(function () {
-    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=tutkinnot/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
-      makeBulletGraph("degrees","Degrees",data);
-    });
-    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=opiskelijat/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
-      makeBulletGraph("students","Students",data);
-    });
-    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=aloittaneet/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
-      makeBulletGraph("new","New",data);
-    });
-    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=opiskelijat_lasna/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
-      makeBulletGraph("present","Present",data);
-    });
-    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=opiskelijat_fte/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
-      makeBulletGraph("fte","FTE",data);
-    });
-    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/mittari=opiskelijat_viisviis/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
-      makeBulletGraph("fivefive","55sp",data);
+    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
+      $.each( data, function( key, val ) {
+        if (val.mittari=="tutkinnot") {
+          makeBulletGraph("degrees","Degrees",val);
+        }
+        if (val.mittari=="opiskelijat") {
+          makeBulletGraph("students","Students",val);
+        }
+        if (val.mittari=="aloittaneet") {
+          makeBulletGraph("new","New",val);
+        }
+        if (val.mittari=="opiskelijat_lasna") {
+          makeBulletGraph("present","Present",val);
+        }
+        if (val.mittari=="opiskelijat_fte") {
+          makeBulletGraph("fte","FTE",val);
+        }
+        if (val.mittari=="opiskelijat_viisviis") {
+          makeBulletGraph("fivefive","55sp",val);
+        }
+      });
     });
   });
 </script>

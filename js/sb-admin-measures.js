@@ -4,6 +4,8 @@ Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSyste
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
 $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
+  $("#title_org").append(data[0].organisaatio_en);
+  
   var eduscope = {};
   eduscope.labels = [];
   eduscope.degrees = [];

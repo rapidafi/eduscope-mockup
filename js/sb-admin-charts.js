@@ -4,6 +4,7 @@ Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSyste
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
 $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
+  $("#title_org").append(data[0].organisaatio_en);
   var eduscope = {};
   eduscope.labels = [];
   eduscope.degrees = [];
@@ -268,4 +269,104 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/
       },
     });
   }
+});
+
+$.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_perus_kk_ala_vuosi/organisaatio_koodi="+qOrganization+"/vuosi="+qYear, function( data ) {
+  var eduscope = {};
+  eduscope.labels = [];
+  eduscope.degrees = [];
+  eduscope.students = [];
+  eduscope.new = [];
+  eduscope.present = [];
+  eduscope.fte = [];
+  eduscope.max = 0;
+  /*
+  "okmohjauksenala_koodi": "2",
+  "okmohjauksenala": "Taiteet ja kulttuurialat",
+  "okmohjauksenala_sv": "Taiteet ja kulttuurialat",
+  "okmohjauksenala_en": "Taiteet ja kulttuurialat",
+  "organisaatio_koodi": "02609",
+  "organisaatio": "Saimaan ammattikorkeakoulu",
+  "organisaatio_sv": "Saimaan ammattikorkeakoulu",
+  "organisaatio_en": "Saimaa University of Applied Sciences",
+  "vuosi": 2016,
+  "opiskelijat": 122,
+  "aloittaneet": 33,
+  "opiskelijat_fte": "104.5",
+  "opiskelijat_lasna": 113,
+  "tutkinnot": 28
+  */
+  $.each( data, function( key, val ) {
+    eduscope.labels.push(val.okmohjauksenala_en);
+    eduscope.degrees.push(val.tutkinnot);
+    eduscope.students.push(val.opiskelijat);
+    eduscope.new.push(val.aloittaneet);
+    eduscope.present.push(val.opiskelijat_lasna);
+    eduscope.fte.push(val.opiskelijat_fte);
+    eduscope.max = Math.max(+val.tutkinnot,+val.opiskelijat,+val.aloittaneet,+val.opiskelijat_lasna,+val.opiskelijat_fte,+eduscope.max);
+  });
+  console.debug("eduscope",eduscope)
+  new Chart(document.getElementById("okmBarChart"), {
+    type: 'bar',
+    data: {
+      labels: eduscope.labels,
+      datasets: [
+        {
+          label: "Degrees",
+          data: eduscope.degrees,
+          backgroundColor: "rgba(2,117,216,0.5)",
+          borderColor: "rgba(2,117,216,1)",
+        },
+        {
+          label: "Students",
+          data: eduscope.students,
+          backgroundColor: "rgba(216,117,2,0.5)",
+          borderColor: "rgba(216,117,2,1)",
+        },
+        {
+          label: "New",
+          data: eduscope.new,
+          backgroundColor: "rgba(117,216,2,0.5)",
+          borderColor: "rgba(117,216,2,1)",
+        },
+        {
+          label: "Present",
+          data: eduscope.present,
+          backgroundColor: "rgba(2,216,117,0.5)",
+          borderColor: "rgba(2,216,117,1)",
+        },
+        {
+          label: "FTE",
+          data: eduscope.fte,
+          backgroundColor: "rgba(117,2,216,0.5)",
+          borderColor: "rgba(117,2,216,1)",
+        },
+      ],
+    },
+    options: {
+      scales: {
+        xAxes: [{
+          gridLines: {
+            display: true
+          },
+          ticks: {
+            maxTicksLimit: 12 //all... doesnt work for small screens
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            min: 0,
+            max: Math.ceil((eduscope.max+(eduscope.max/100*5))/100)*100,
+            maxTicksLimit: 10
+          },
+          gridLines: {
+            display: true
+          }
+        }],
+      },
+      legend: {
+        display: true
+      }
+    }
+  });
 });
