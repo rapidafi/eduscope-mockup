@@ -4,7 +4,6 @@ Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSyste
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
 $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
-  $("#title_org").append(data[0].organisaatio_en);
   var eduscope = {};
   eduscope.labels = [];
   eduscope.degrees = [];
@@ -256,6 +255,7 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/
 
 
   // -- Pie Chart Example
+  /*
   var ctx3 = document.getElementById("myPieChart");
   if (ctx3) {
     var myPieChart = new Chart(ctx3, {
@@ -269,6 +269,7 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/
       },
     });
   }
+  //*/
 });
 
 $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_perus_kk_ala_vuosi/organisaatio_koodi="+qOrganization+"/vuosi="+qYear, function( data ) {
@@ -280,22 +281,6 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_perus_kk_ala_vuosi
   eduscope.present = [];
   eduscope.fte = [];
   eduscope.max = 0;
-  /*
-  "okmohjauksenala_koodi": "2",
-  "okmohjauksenala": "Taiteet ja kulttuurialat",
-  "okmohjauksenala_sv": "Taiteet ja kulttuurialat",
-  "okmohjauksenala_en": "Taiteet ja kulttuurialat",
-  "organisaatio_koodi": "02609",
-  "organisaatio": "Saimaan ammattikorkeakoulu",
-  "organisaatio_sv": "Saimaan ammattikorkeakoulu",
-  "organisaatio_en": "Saimaa University of Applied Sciences",
-  "vuosi": 2016,
-  "opiskelijat": 122,
-  "aloittaneet": 33,
-  "opiskelijat_fte": "104.5",
-  "opiskelijat_lasna": 113,
-  "tutkinnot": 28
-  */
   $.each( data, function( key, val ) {
     eduscope.labels.push(val.okmohjauksenala_en);
     eduscope.degrees.push(val.tutkinnot);
