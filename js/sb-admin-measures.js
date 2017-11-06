@@ -3,7 +3,7 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
-$.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
+$.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
   var eduscope = {};
   eduscope.labels = [];
   eduscope.degrees = [];
@@ -12,6 +12,7 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/
   eduscope.present = [];
   eduscope.fte = [];
   eduscope.fivefive = [];
+  eduscope.passrate = [];
   $.each( data, function( key, val ) {
     eduscope.labels.push(val.vuosi);
     eduscope.degrees.push(val.tutkinnot);
@@ -20,6 +21,7 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/
     eduscope.present.push(val.opiskelijat_lasna);
     eduscope.fte.push(val.opiskelijat_fte);
     eduscope.fivefive.push(val.opiskelijat_viisviis);
+    eduscope.passrate.push(val.lapaisy4v);
     if (val.vuosi==qYear) {
       eduscope.sel_year = val.vuosi;
       eduscope.sel_degree = val.tutkinnot;
@@ -28,6 +30,7 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/
       eduscope.sel_present = val.opiskelijat_lasna;
       eduscope.sel_fte = val.opiskelijat_fte;
       eduscope.sel_fivefive = val.opiskelijat_viisviis;
+      eduscope.sel_passrate = val.lapaisy4v;
     }
   });
   eduscope.min_degree = eduscope.degrees.reduce(function(a, b) { return Math.min(a, b); });
@@ -42,6 +45,8 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/
   eduscope.max_fte = eduscope.fte.reduce(function(a, b) { return Math.max(a, b); });
   eduscope.min_fivefive = eduscope.fivefive.reduce(function(a, b) { return Math.min(a, b); });
   eduscope.max_fivefive = eduscope.fivefive.reduce(function(a, b) { return Math.max(a, b); });
+  eduscope.min_passrate = eduscope.passrate.reduce(function(a, b) { return Math.min(a, b); });
+  eduscope.max_passrate = eduscope.passrate.reduce(function(a, b) { return Math.max(a, b); });
   console.debug("eduscope",eduscope)
 
   // -- Degrees Line Chart
@@ -303,6 +308,48 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/koulutus_vuosi_korkeakoulu/
           ticks: {
             min: Math.floor((eduscope.min_fivefive-(eduscope.min_fivefive/100*5))/100)*100,
             max: Math.ceil((eduscope.max_fivefive+(eduscope.max_fivefive/100*5))/100)*100,
+            maxTicksLimit: 10
+          },
+          gridLines: { color: "rgba(0, 0, 0, .125)" }
+        }],
+      },
+      legend: { display: false }
+    }
+  });
+
+
+  new Chart(document.getElementById("passrateLineChart"), {
+    type: 'line',
+    data: {
+      labels: eduscope.labels,
+      datasets: [
+        {
+          label: "55sp",
+          data: eduscope.passrate,
+          lineTension: 0.3,
+          backgroundColor: "rgba(2,117,216,0.2)",
+          borderColor: "rgba(2,117,216,1)",
+          pointRadius: 5,
+          pointBackgroundColor: "rgba(2,117,216,1)",
+          pointBorderColor: "rgba(255,255,255,0.8)",
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(2,117,216,1)",
+          pointHitRadius: 20,
+          pointBorderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        xAxes: [{
+          time: { unit: 'year' },
+          gridLines: { display: false },
+          ticks: { maxTicksLimit: 10 }
+        }],
+        yAxes: [{
+          ticks: {
+            min: Math.floor((eduscope.min_passrate-(eduscope.min_passrate/100*5))/100)*100,
+            max: Math.ceil((eduscope.max_passrate+(eduscope.max_passrate/100*5))/100)*100,
             maxTicksLimit: 10
           },
           gridLines: { color: "rgba(0, 0, 0, .125)" }

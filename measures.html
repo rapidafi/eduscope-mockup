@@ -132,6 +132,12 @@
           <canvas id="fivefiveLineChart" width="100%" height="30"></canvas>
         </div>
       </div>
+      <div class="card mb-3">
+        <div class="card-header"><i class="fa fa-area-chart"></i> Pass rate</div>
+        <div class="card-body">
+          <canvas id="passrateLineChart" width="100%" height="30"></canvas>
+        </div>
+      </div>
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
@@ -233,7 +239,7 @@ function makeBulletGraph(partialId,title,val) {
 }
 
   $(document).ready(function () {
-    $.getJSON("https://sa.rapida.fi/eduscope_v201711.php/hei_bullet/mittariryhma=koulutus/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
+    $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/hei_bullet/mittariryhma=koulutus/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
       $.each( data, function( key, val ) {
         val.yksikko = 'count';
         if (val.mittari=="tutkinnot") {
