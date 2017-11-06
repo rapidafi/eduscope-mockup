@@ -324,7 +324,7 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
       labels: eduscope.labels,
       datasets: [
         {
-          label: "55sp",
+          label: "Pass rate",
           data: eduscope.passrate,
           lineTension: 0.3,
           backgroundColor: "rgba(2,117,216,0.2)",
