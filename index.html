@@ -8,14 +8,30 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <title>Eduscope</title>
+  
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
   <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <!-- Page level plugin CSS-->
-  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+  <link href="vendor/jqwidgets/jqx.base.css" rel="stylesheet" type="text/css">
+
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/popper/popper.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Page level plugin JavaScript-->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  <!-- bulletgraph -->
+  <script src="vendor/jqwidgets/jqxcore.js"></script>
+  <script src="vendor/jqwidgets/jqxdata.js"></script>
+  <script src="vendor/jqwidgets/jqxbulletchart.js"></script>
+  <script src="vendor/jqwidgets/jqxtooltip.js"></script>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -251,16 +267,7 @@
         </div>
       </div>
     </div>
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/popper/popper.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <!-- Page level plugin JavaScript-->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin.js"></script>
     <!-- Custom scripts for this page-->
@@ -268,15 +275,15 @@
     <script src="js/sb-admin-charts.js"></script>
     <script src="js/sb-admin-measures.js"></script>
 
-<script type="text/javascript">
-  $(document).ready(function () {
-    $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization+"/vuosi="+qYear+"", function( data ) {
-      $("#eduscope_students").append(data[0].opiskelijat);
-      $("#eduscope_degrees").append(data[0].tutkinnot);
-      $("#eduscope_new").append(data[0].aloittaneet);
-    });
-  });
-</script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization+"/vuosi="+qYear+"", function( data ) {
+          $("#eduscope_students").append(data[0].opiskelijat);
+          $("#eduscope_degrees").append(data[0].tutkinnot);
+          $("#eduscope_new").append(data[0].aloittaneet);
+        });
+      });
+    </script>
 
   </div>
   <!-- /.content-wrapper-->

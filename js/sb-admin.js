@@ -93,6 +93,7 @@ if (QueryString) {
 $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
   $("#title_org").append(data[0].organisaatio_en);
 });
+$("#title_measure").append(qMeasure);
 
 // pass arguments on:
 $(document).ready(function () {

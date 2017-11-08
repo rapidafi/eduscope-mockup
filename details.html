@@ -8,24 +8,40 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <title>Eduscope</title>
+
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
   <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <link href="vendor/jqwidgets/jqx.base.css" rel="stylesheet" type="text/css">
+
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/popper/popper.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Page level plugin JavaScript-->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  <script src="vendor/datatables/jquery.dataTables.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+  <!-- bulletgraph -->
+  <script src="vendor/jqwidgets/jqxcore.js"></script>
+  <script src="vendor/jqwidgets/jqxdata.js"></script>
+  <script src="vendor/jqwidgets/jqxbulletchart.js"></script>
+  <script src="vendor/jqwidgets/jqxtooltip.js"></script>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="index.html"><img src="img/eduscope_favicon.png" alt="Eduscope" width="50"></a>
-    <!-- Breadcrumbs-->
-    <span class="navbar-brand">
-      <span id="title_org"></span>
-      &gt;
-      Funding measures
-    </span>
+    <span class="navbar-brand">Eduscope</span>
+
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -69,6 +85,17 @@
 
   <div class="content-wrapper">
     <div class="container-fluid">
+
+      <!-- Breadcrumbs-->
+      <div class="row">
+        <a class="nav-link" href="javascript:history.go(-1);//"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+        <a class="nav-link" href="index.html?" id="title_org"></a>
+        <span class="nav-link">&gt;</span>
+        <a class="nav-link" href="funding.html?">Funding measures</a>
+        <span class="nav-link">&gt;</span>
+        <span class="nav-link" id="title_measure" style="text-transform: capitalize;"></span>
+      </div>
+
       <!-- choose by param? -->
       <div class="card mb-3 invisible" id="card_degrees">
         <div class="card-header">
@@ -162,16 +189,7 @@
         </div>
       </div>
     </div>
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/popper/popper.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <!-- Page level plugin JavaScript-->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin.js"></script>
     <!-- Custom scripts for this page-->

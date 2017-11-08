@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+
   <title>Eduscope</title>
+
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
   <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <link href="vendor/jqwidgets/jqx.base.css" rel="stylesheet" type="text/css">
+
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/popper/popper.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Page level plugin JavaScript-->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  <!-- bulletgraph -->
+  <script src="vendor/jqwidgets/jqxcore.js"></script>
+  <script src="vendor/jqwidgets/jqxdata.js"></script>
+  <script src="vendor/jqwidgets/jqxbulletchart.js"></script>
+  <script src="vendor/jqwidgets/jqxtooltip.js"></script>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="index.html"><img src="img/eduscope_favicon.png" alt="Eduscope" width="50"></a>
-    <!-- Breadcrumbs-->
-    <span class="navbar-brand">
-      <span id="title_org"></span>
-      &gt;
-      Funding measures
-    </span>
+    <span class="navbar-brand">Eduscope</span>
+
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -59,7 +73,7 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+          <a class="nav-link" data-toggle="modal" data-target="#logoutModal">
             <i class="fa fa-fw fa-sign-out"></i>Logout</a>
         </li>
       </ul>
@@ -69,6 +83,15 @@
 
   <div class="content-wrapper">
     <div class="container-fluid">
+
+      <!-- Breadcrumbs-->
+      <div class="row">
+        <a class="nav-link" href="javascript:history.go(-1);//"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+        <a class="nav-link" href="index.html?" id="title_org"></a>
+        <span class="nav-link">&gt;</span>
+        <span class="nav-link">Funding measures</span>
+      </div>
+
       <!-- Bullet Chart -->
       <a class="nav-link" href="details.html?measure=degrees"><div id="jqxBulletChart_degrees"></div></a>
       <a class="nav-link" href="details.html?measure=students"><div id="jqxBulletChart_students"></div></a>
@@ -78,55 +101,6 @@
       <a class="nav-link" href="details.html?measure=fivefive"><div id="jqxBulletChart_fivefive"></div></a>
       <a class="nav-link" href="details.html?measure=passrate"><div id="jqxBulletChart_passrate"></div></a>
 
-      <!-- choose by param?
-      <div class="card mb-3">
-        <div class="row">
-          <div class="col-lg-4 col-sm-6 my-auto">
-            <div class="card-header">
-              <i class="fa fa-area-chart"></i> Degrees</div>
-            <div class="card-body">
-              <canvas id="degreesLineChart" width="100%" height="30"></canvas>
-            </div>
-          </div>
-          <div class="col-lg-4 col-sm-6 my-auto">
-            <div class="card-header">
-              <i class="fa fa-area-chart"></i> Students</div>
-            <div class="card-body">
-              <canvas id="studentsLineChart" width="100%" height="30"></canvas>
-            </div>
-          </div>
-          <div class="col-lg-4 col-sm-6 my-auto">
-            <div class="card-header">
-              <i class="fa fa-area-chart"></i> New</div>
-            <div class="card-body">
-              <canvas id="newLineChart" width="100%" height="30"></canvas>
-            </div>
-          </div>
-          <div class="col-lg-4 col-sm-6 my-auto">
-            <div class="card-header">
-              <i class="fa fa-area-chart"></i> Present</div>
-            <div class="card-body">
-              <canvas id="presentLineChart" width="100%" height="30"></canvas>
-            </div>
-          </div>
-          <div class="col-lg-4 col-sm-6 my-auto">
-            <div class="card-header">
-              <i class="fa fa-area-chart"></i> FTE</div>
-            <div class="card-body">
-              <canvas id="fteLineChart" width="100%" height="30"></canvas>
-            </div>
-          </div>
-          <div class="col-lg-4 col-sm-6 my-auto">
-            <div class="card-header">
-              <i class="fa fa-area-chart"></i> 55sp</div>
-            <a href="tables.html">
-              <div class="card-body">
-                <canvas id="fivefiveLineChart" width="100%" height="30"></canvas>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>--><!-- /.card-mb-3-->
     </div>
     <!-- /.container-fluid-->
     <footer class="sticky-footer">
@@ -141,11 +115,11 @@
       <i class="fa fa-angle-up"></i>
     </a>
     <!-- Logout Modal-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <h5 class="modal-title" id="logoutModalLabel">Ready to Leave?</h5>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">×</span>
             </button>
@@ -158,26 +132,12 @@
         </div>
       </div>
     </div>
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/popper/popper.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <!-- Page level plugin JavaScript-->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin.js"></script>
     <!-- Custom scripts for this page-->
     <!-- script src="js/sb-admin-charts.js"></script -->
     <!-- script src="js/sb-admin-measures.js"></script -->
-    <!-- bulletgraph -->
-    <script type="text/javascript" src="vendor/jqwidgets/jqxcore.js"></script>
-    <script type="text/javascript" src="vendor/jqwidgets/jqxdata.js"></script>
-    <script type="text/javascript" src="vendor/jqwidgets/jqxbulletchart.js"></script>
-    <script type="text/javascript" src="vendor/jqwidgets/jqxtooltip.js"></script>
-    <link href="vendor/jqwidgets/jqx.base.css" rel="stylesheet" type="text/css">
-    <!-- specific for this page -->
     <script src="js/eduscope-bullet.js"></script>
     <style>
       div.jqx-bulletchart-title {
