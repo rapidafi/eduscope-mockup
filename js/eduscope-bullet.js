@@ -58,20 +58,20 @@ $(document).ready(function () {
         makeBulletGraph("students","Students",val);
       }
       if (val.mittari=="aloittaneet") {
-        makeBulletGraph("new","New",val);
+        makeBulletGraph("new","New students",val);
       }
       if (val.mittari=="opiskelijat_lasna") {
-        makeBulletGraph("present","Present",val);
+        makeBulletGraph("present","Present students",val);
       }
       if (val.mittari=="opiskelijat_fte") {
         makeBulletGraph("fte","FTE",val);
       }
       if (val.mittari=="opiskelijat_viisviis") {
-        makeBulletGraph("fivefive","55sp",val);
+        makeBulletGraph("fivefive","55 sp achieved",val);
       }
       if (val.mittari=="lapaisy4v") {
         val.yksikko='%';
-        makeBulletGraph("passrate","Pass rate",val);
+        makeBulletGraph("passrate","Pass rate 4 years",val);
       }
     });
   });

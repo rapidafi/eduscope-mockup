@@ -73,6 +73,7 @@ var QueryString = function () {
 let qOrganization="02609"; // oppilaitosnumero, "02609"
 let qYear=2016; // vuosi, 2016
 let qOKM="1"; // OKM ohjauksen ala, "1"
+let qMeasure="";
 if (QueryString) {
   //console.debug(QueryString);
   if (QueryString.organization) {
@@ -84,6 +85,9 @@ if (QueryString) {
   if (QueryString.okm) {
     qOKM=QueryString.okm;
   }
+  if (QueryString.measure) {
+    qMeasure=QueryString.measure;
+  }
 }
 
 $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
@@ -94,8 +98,8 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
 $(document).ready(function () {
   $('a.nav-link').each(function(){
     var oldurl = $(this).attr('href');
-    if(oldurl){//skip some unwanted
-      $(this).attr('href',oldurl+"?organization="+qOrganization+"&year="+qYear);
+    if(oldurl){//skip some unwanted, nb catenate starting with "&"
+      $(this).attr('href',oldurl+"&organization="+qOrganization+"&year="+qYear);
     }
   });
 });

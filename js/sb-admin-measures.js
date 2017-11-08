@@ -317,7 +317,7 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
     }
   });
 
-
+  /*
   new Chart(document.getElementById("passrateLineChart"), {
     type: 'line',
     data: {
@@ -358,4 +358,6 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
       legend: { display: false }
     }
   });
+  //*/
+  
 });
