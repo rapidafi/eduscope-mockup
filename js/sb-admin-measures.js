@@ -3,10 +3,14 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
-function makeGraphConfig(eduscope,partialId,dataKey,title) {
-  let min = eduscope["min_"+partialId];
-  let max = eduscope["max_"+partialId];
+function makeGraphConfig(eduscope,dataKey,title) {
   let data = eduscope[dataKey];
+  let mins = [];
+  let maxs = [];
+  $.each(eduscope.all[dataKey], function(kmea,vmea){
+    if(vmea.min){ mins.push(vmea.min) }else{ mins.push(null) };
+    if(vmea.max){ maxs.push(vmea.max) }else{ maxs.push(null) };
+  });
 
   // make prediction with regression
   // nb! in all of these arrays the order is significant, even indexes must match!
@@ -35,6 +39,8 @@ function makeGraphConfig(eduscope,partialId,dataKey,title) {
   console.debug("makeGraphConfig",dataKey
     ,"labels",eduscope.labels
     ,"data",data
+    ,"min "+qYear,eduscope.all[dataKey][qYear].min,mins
+    ,"max "+qYear,eduscope.all[dataKey][qYear].max,maxs
     ,"regress_data",regress_data
     ,"regress_polynomial",regress_polynomial
     ,"regress_graph",regress_graph
@@ -51,8 +57,8 @@ function makeGraphConfig(eduscope,partialId,dataKey,title) {
           label: title,
           data: data,
           lineTension: 0.3,
-          //backgroundColor: "rgba(0,0,0,0)",//invisible
-          backgroundColor: "rgba(2,117,216,0.2)",
+          backgroundColor: "rgba(0,0,0,0)",//invisible
+          //backgroundColor: "rgba(2,117,216,0.2)",
           borderColor: "rgba(2,117,216,1)",
           pointRadius: 5,
           pointBackgroundColor: "rgba(2,117,216,1)",
@@ -62,9 +68,24 @@ function makeGraphConfig(eduscope,partialId,dataKey,title) {
           pointHitRadius: 20,
           pointBorderWidth: 2,
         },
-        {
+        {//min
+          label: title+" 33%",
+          data: mins,
+          backgroundColor: "rgba(202,202,202,0.1)",
+          borderColor: "rgba(202,202,202,0.3)",
+          fill: '-1'
+        },
+        {//max
+          label: title+" 67%",
+          data: maxs,
+          backgroundColor: "rgba(202,202,202,0.1)",
+          borderColor: "rgba(202,202,202,0.3)",
+          fill: '-2'
+        },
+        {//trend with prediction by regression
           label: title+" trend",
           data: regress_graph,
+          borderColor: "rgba(202,0,0,0.3)",
           backgroundColor: "rgba(0,0,0,0)",//invisible
         }
       ],
@@ -96,13 +117,13 @@ function makeGraphConfig(eduscope,partialId,dataKey,title) {
         }],
       },
       legend: {
-        display: false
+        display: true
       },
     }
   }
 }
 
-$.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
+$.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/", function( data ) {
   var eduscope = {};
   eduscope.labels = [];
   eduscope.degrees = [];
@@ -112,26 +133,67 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
   eduscope.fte = [];
   eduscope.fivefive = [];
   eduscope.passrate = [];
-  $.each( data, function( key, val ) {
-    eduscope.labels.push(val.vuosi);
-    eduscope.degrees.push(val.tutkinnot);
-    eduscope.students.push(val.opiskelijat);
-    eduscope.new.push(val.aloittaneet);
-    eduscope.present.push(val.opiskelijat_lasna);
-    eduscope.fte.push(val.opiskelijat_fte);
-    eduscope.fivefive.push(val.opiskelijat_viisviis);
-    eduscope.passrate.push(val.lapaisy4v);
-    if (val.vuosi==qYear) {
-      eduscope.sel_year = val.vuosi;
-      eduscope.sel_degree = val.tutkinnot;
-      eduscope.sel_student = val.opiskelijat;
-      eduscope.sel_new = val.aloittaneet;
-      eduscope.sel_present = val.opiskelijat_lasna;
-      eduscope.sel_fte = val.opiskelijat_fte;
-      eduscope.sel_fivefive = val.opiskelijat_viisviis;
-      eduscope.sel_passrate = val.lapaisy4v;
+  eduscope.all = {
+    "degrees":{},
+    "students":{},
+    "new":{},
+    "present":{},
+    "fte":{},
+    "fivefive":{},
+    "passrate":{},
+  };// measure / per year / min,max
+  $.each(data, function(k, val) {
+    if (val.organisaatio_koodi == qOrganization) {
+      eduscope.labels.push(val.vuosi);
+      eduscope.degrees.push(val.tutkinnot);
+      eduscope.students.push(val.opiskelijat);
+      eduscope.new.push(val.aloittaneet);
+      eduscope.present.push(val.opiskelijat_lasna);
+      eduscope.fte.push(val.opiskelijat_fte);
+      eduscope.fivefive.push(val.opiskelijat_viisviis);
+      eduscope.passrate.push(val.lapaisy4v);
+      if (val.vuosi==qYear) {
+        eduscope.sel_year = val.vuosi;
+        eduscope.sel_degree = val.tutkinnot;
+        eduscope.sel_student = val.opiskelijat;
+        eduscope.sel_new = val.aloittaneet;
+        eduscope.sel_present = val.opiskelijat_lasna;
+        eduscope.sel_fte = val.opiskelijat_fte;
+        eduscope.sel_fivefive = val.opiskelijat_viisviis;
+        eduscope.sel_passrate = val.lapaisy4v;
+      }
     }
+    $.each(eduscope.all, function(key, notinterested) {
+      let mappeddata = val.tutkinnot;
+      switch (key) {
+        case "degrees":  mappeddata = val.tutkinnot; break;
+        case "students": mappeddata = val.opiskelijat; break;
+        case "new":      mappeddata = val.aloittaneet; break;
+        case "present":  mappeddata = val.opiskelijat_lasna; break;
+        case "fte":      mappeddata = val.opiskelijat_fte; break;
+        case "fivefive": mappeddata = val.opiskelijat_viisviis; break;
+        case "passrate": mappeddata = val.lapaisy4v; break;
+      }
+      if (!eduscope.all[key][val.vuosi]) {
+        eduscope.all[key][val.vuosi] = {}
+        eduscope.all[key][val.vuosi].data = [];
+      }
+      eduscope.all[key][val.vuosi].data.push(mappeddata);
+    });
   });
+  $.each(eduscope.all, function(key, val) {
+    $.each(eduscope.labels, function(y, year) {
+      let arr = eduscope.all[key][year].data;
+      arr.sort(function(a,b){return a-b});
+      let len =  arr.length;
+      let per33 = Math.floor(len*.33) - 1;
+      let per67 = Math.ceil(len*.67) + 1;
+      eduscope.all[key][year].min = arr[per33];
+      eduscope.all[key][year].max = arr[per67];
+    });
+  });
+  // selected organization
+  /*
   eduscope.min_degree = eduscope.degrees.reduce(function(a, b) { return Math.min(a, b); });
   eduscope.max_degree = eduscope.degrees.reduce(function(a, b) { return Math.max(a, b); });
   eduscope.min_student = eduscope.students.reduce(function(a, b) { return Math.min(a, b); });
@@ -146,18 +208,19 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
   eduscope.max_fivefive = eduscope.fivefive.reduce(function(a, b) { return Math.max(a, b); });
   eduscope.min_passrate = eduscope.passrate.reduce(function(a, b) { return Math.min(a, b); });
   eduscope.max_passrate = eduscope.passrate.reduce(function(a, b) { return Math.max(a, b); });
+  //*/
   // for precicting
   for (let y=0; y<(qPredictYears||0); y++) {
-    eduscope.labels.push(Math.max(eduscope.labels.reduce(function(a,b){return Math.max(a,b);}))+1)
+    eduscope.labels.push(eduscope.labels.reduce(function(a,b){return Math.max(a,b);})+1);
   }
-  console.debug("eduscope",eduscope)
+  console.debug("eduscope",eduscope);
 
-  new Chart(document.getElementById("degreesLineChart"), makeGraphConfig(eduscope,"degree","degrees","Degrees"));
-  new Chart(document.getElementById("studentsLineChart"), makeGraphConfig(eduscope,"student","students","Students"));
-  new Chart(document.getElementById("newLineChart"), makeGraphConfig(eduscope,"new","new","New"));
-  new Chart(document.getElementById("presentLineChart"), makeGraphConfig(eduscope,"present","present","Present"));
-  new Chart(document.getElementById("fteLineChart"), makeGraphConfig(eduscope,"fte","fte","FTE"));
-  new Chart(document.getElementById("fivefiveLineChart"), makeGraphConfig(eduscope,"fivefive","fivefive","55sp"));
-  //new Chart(document.getElementById("passrateLineChart"), makeGraphConfig(eduscope,"passrate","passrate","Pass rate"));
+  new Chart(document.getElementById("degreesLineChart"), makeGraphConfig(eduscope,"degrees","Degrees"));
+  new Chart(document.getElementById("studentsLineChart"), makeGraphConfig(eduscope,"students","Students"));
+  new Chart(document.getElementById("newLineChart"), makeGraphConfig(eduscope,"new","New"));
+  new Chart(document.getElementById("presentLineChart"), makeGraphConfig(eduscope,"present","Present"));
+  new Chart(document.getElementById("fteLineChart"), makeGraphConfig(eduscope,"fte","FTE"));
+  new Chart(document.getElementById("fivefiveLineChart"), makeGraphConfig(eduscope,"fivefive","55sp"));
+  //new Chart(document.getElementById("passrateLineChart"), makeGraphConfig(eduscope,"passrate","Pass rate"));
   
 });
