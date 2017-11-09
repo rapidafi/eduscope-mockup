@@ -7,25 +7,40 @@ function makeGraphConfig(eduscope,partialId,dataKey,title) {
   let min = eduscope["min_"+partialId];
   let max = eduscope["max_"+partialId];
   let data = eduscope[dataKey];
+
+  // make prediction with regression
+  // nb! in all of these arrays the order is significant, even indexes must match!
   let regress_data = [];
   for (var i=0; i<data.length; i++) {
     if (data[i]) {
       regress_data.push([eduscope.labels[i],1*data[i]]);
     }
   }
-  let regress_linear = regression.linear(regress_data,{order:2,precision:2,period:null});
-  let regress_polynomial = regression.polynomial(regress_data,{order:2,precision:5,period:2});
+  //let regress_linear = regression.linear(regress_data,{order:2,precision:2,period:null});
+  let regress_polynomial = regression.polynomial(regress_data,{order:4,precision:20}); //period not used(?); large enough precision (>10) so roundings don't destroy calculation
   let regress_graph = [];
   for (var i=0,j=0; i<data.length; i++) {
     if (data[i]) {
       regress_graph.push(regress_polynomial.points[j++][1]);
     } else {
-      regress_graph.push(data[i]);//put those nulls as placeholders
+      regress_graph.push(data[i]);//put nulls as placeholders
     }
   }
-  let y_max = Math.max(eduscope.labels.reduce(function(a, b) {return Math.max(a, b);}));
-  regress_graph.push(regress_polynomial.predict(y_max)[1]);
-  console.debug("makeGraphConfig",dataKey,eduscope.labels,data,regress_data,regress_linear,regress_polynomial,regress_graph,regress_polynomial.predict(y_max));
+  // actual max year in data
+  let y_max = eduscope.labels.reduce(function(a,b){return Math.max(a,b);});
+  for (let y=0; y<(qPredictYears||0); y++) {
+    regress_graph.push(regress_polynomial.predict(y_max+y+1)[1]);
+  }
+  /*
+  console.debug("makeGraphConfig",dataKey
+    ,"labels",eduscope.labels
+    ,"data",data
+    ,"regress_data",regress_data
+    ,"regress_polynomial",regress_polynomial
+    ,"regress_graph",regress_graph
+  );//*/
+  //-prediction
+
 
   return {
     type: 'line',
@@ -48,7 +63,7 @@ function makeGraphConfig(eduscope,partialId,dataKey,title) {
           pointBorderWidth: 2,
         },
         {
-          label: "trend",
+          label: title+" trend",
           data: regress_graph,
           backgroundColor: "rgba(0,0,0,0)",//invisible
         }
@@ -70,8 +85,9 @@ function makeGraphConfig(eduscope,partialId,dataKey,title) {
         yAxes: [{
           ticks: {
             // dynamic minimum or always 0?
-            min: 0,//Math.floor((min-(min/100*5))/100)*100,
-            //max: Math.ceil((max+(max/100*5))/100)*100,
+            //min: 0,//Math.floor((min-(min/100*5))/100)*100,
+            beginAtZero: qGraphMin?false:true,
+            //go dynamic: max: Math.ceil((max+(max/100*5))/100)*100,
             maxTicksLimit: 10
           },
           gridLines: {
@@ -82,23 +98,6 @@ function makeGraphConfig(eduscope,partialId,dataKey,title) {
       legend: {
         display: false
       },
-      /*
-      annotation: {
-        annotations: [{
-          type: 'line',
-          mode: 'horizontal',
-          scaleID: 'y-axis-0',
-          value: regress_linear.equation[0],
-          endValue: regress_linear.equation[1],
-          borderColor: 'rgb(75, 192, 192)',
-          borderWidth: 4,
-          label: {
-            enabled: true,
-            content: 'Trendline',
-            yAdjust: -16,
-          }
-        }]
-      }//*/
     }
   }
 }
@@ -148,7 +147,9 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
   eduscope.min_passrate = eduscope.passrate.reduce(function(a, b) { return Math.min(a, b); });
   eduscope.max_passrate = eduscope.passrate.reduce(function(a, b) { return Math.max(a, b); });
   // for precicting
-  eduscope.labels.push(Math.max(eduscope.labels.reduce(function(a, b) {return Math.max(a, b);}))+1)
+  for (let y=0; y<(qPredictYears||0); y++) {
+    eduscope.labels.push(Math.max(eduscope.labels.reduce(function(a,b){return Math.max(a,b);}))+1)
+  }
   console.debug("eduscope",eduscope)
 
   new Chart(document.getElementById("degreesLineChart"), makeGraphConfig(eduscope,"degree","degrees","Degrees"));

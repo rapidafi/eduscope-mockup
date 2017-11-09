@@ -74,6 +74,8 @@ let qOrganization="02609"; // oppilaitosnumero, "02609"
 let qYear=2016; // vuosi, 2016
 let qOKM="1"; // OKM ohjauksen ala, "1"
 let qMeasure="";
+let qPredictYears=1;
+let qGraphMin=null;
 if (QueryString) {
   //console.debug(QueryString);
   if (QueryString.organization) {
@@ -87,6 +89,12 @@ if (QueryString) {
   }
   if (QueryString.measure) {
     qMeasure=QueryString.measure;
+  }
+  if (QueryString.predictyears) {
+    qPredictYears=QueryString.predictyears;
+  }
+  if (QueryString.graphmin) {
+    qGraphMin=QueryString.graphmin;
   }
 }
 
