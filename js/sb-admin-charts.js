@@ -43,15 +43,15 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
   eduscope.min_fivefive = eduscope.fivefive.reduce(function(a, b) { return Math.min(a, b); });
   eduscope.max_fivefive = eduscope.fivefive.reduce(function(a, b) { return Math.max(a, b); });
   console.debug("eduscope",eduscope)
-  $("#bar_year").append(eduscope.sel_year + " ");
-  $("#bar_degrees").append(eduscope.sel_degree + " ");
-  $("#bar_students").append(eduscope.sel_student + " ");
-  $("#bar_new").append(eduscope.sel_new + " ");
-  $("#bar_present").append(eduscope.sel_present + " ");
-  $("#bar_fte").append(eduscope.sel_fte + " ");
-  $("#bar_fivefive").append(eduscope.sel_fivefive + " ");
+  $("#sel_year").append(eduscope.sel_year + " ");
+  $("#sel_degrees").append(eduscope.sel_degree + " ");
+  $("#sel_students").append(eduscope.sel_student + " ");
+  $("#sel_new").append(eduscope.sel_new + " ");
+  $("#sel_present").append(eduscope.sel_present + " ");
+  $("#sel_fte").append(eduscope.sel_fte + " ");
+  $("#sel_fivefive").append(eduscope.sel_fivefive + " ");
 
-  new Chart(document.getElementById("myLineChart"), {
+  new Chart(document.getElementById("myLineChart").getContext("2d"), {
     type: 'line',
     data: {
       labels: eduscope.labels,
@@ -163,9 +163,8 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
         }],
         yAxes: [{
           ticks: {
-            min: 0, //Math.min(eduscope.min_degree,eduscope.min_student)-50,
-            //max: Math.max(eduscope.max_degree,eduscope.max_student)+50,
-            max: Math.ceil((eduscope.max_student+(eduscope.max_student/100*5))/100)*100,
+            min: 0,
+            //disables dynamics: max: Math.ceil((eduscope.max_student+(eduscope.max_student/100*5))/100)*100,
             maxTicksLimit: 10
           },
           gridLines: {
@@ -174,7 +173,7 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
         }],
       },
       legend: {
-        display: false
+        display: true
       }
     }
   });
@@ -226,7 +225,7 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
       scales: {
         xAxes: [{
           time: {
-            unit: 'year'//'month'
+            unit: 'year'
           },
           gridLines: {
             display: false
@@ -237,9 +236,8 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
         }],
         yAxes: [{
           ticks: {
-            min: 0, //Math.min(eduscope.min_degree,eduscope.min_student)-50,
-            //max: Math.max(eduscope.max_degree,eduscope.max_student)+50,
-            max: Math.ceil((eduscope.max_student+(eduscope.max_student/100*5))/100)*100,
+            min: 0,
+            //disables dynamics: max: Math.ceil((eduscope.max_student+(eduscope.max_student/100*5))/100)*100,
             maxTicksLimit: 10
           },
           gridLines: {

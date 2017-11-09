@@ -13,6 +13,7 @@ $(document).ready(function() {
         { "data": "aloittaneet" },
         { "data": "opiskelijat_lasna" },
         { "data": "opiskelijat_fte" },
+        { "data": "opiskelijat_viisviis" },
       ],
       "order": [[0,"desc"]]
     });

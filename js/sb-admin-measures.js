@@ -3,6 +3,106 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
+function makeGraphConfig(eduscope,partialId,dataKey,title) {
+  let min = eduscope["min_"+partialId];
+  let max = eduscope["max_"+partialId];
+  let data = eduscope[dataKey];
+  let regress_data = [];
+  for (var i=0; i<data.length; i++) {
+    if (data[i]) {
+      regress_data.push([eduscope.labels[i],1*data[i]]);
+    }
+  }
+  let regress_linear = regression.linear(regress_data,{order:2,precision:2,period:null});
+  let regress_polynomial = regression.polynomial(regress_data,{order:2,precision:5,period:2});
+  let regress_graph = [];
+  for (var i=0,j=0; i<data.length; i++) {
+    if (data[i]) {
+      regress_graph.push(regress_polynomial.points[j++][1]);
+    } else {
+      regress_graph.push(data[i]);//put those nulls as placeholders
+    }
+  }
+  let y_max = Math.max(eduscope.labels.reduce(function(a, b) {return Math.max(a, b);}));
+  regress_graph.push(regress_polynomial.predict(y_max)[1]);
+  console.debug("makeGraphConfig",dataKey,eduscope.labels,data,regress_data,regress_linear,regress_polynomial,regress_graph,regress_polynomial.predict(y_max));
+
+  return {
+    type: 'line',
+    data: {
+      labels: eduscope.labels,
+      datasets: [
+        {
+          label: title,
+          data: data,
+          lineTension: 0.3,
+          //backgroundColor: "rgba(0,0,0,0)",//invisible
+          backgroundColor: "rgba(2,117,216,0.2)",
+          borderColor: "rgba(2,117,216,1)",
+          pointRadius: 5,
+          pointBackgroundColor: "rgba(2,117,216,1)",
+          pointBorderColor: "rgba(255,255,255,0.8)",
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(2,117,216,1)",
+          pointHitRadius: 20,
+          pointBorderWidth: 2,
+        },
+        {
+          label: "trend",
+          data: regress_graph,
+          backgroundColor: "rgba(0,0,0,0)",//invisible
+        }
+      ],
+    },
+    options: {
+      scales: {
+        xAxes: [{
+          time: {
+            unit: 'year'
+          },
+          gridLines: {
+            display: false
+          },
+          ticks: {
+            maxTicksLimit: 10
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            // dynamic minimum or always 0?
+            min: 0,//Math.floor((min-(min/100*5))/100)*100,
+            //max: Math.ceil((max+(max/100*5))/100)*100,
+            maxTicksLimit: 10
+          },
+          gridLines: {
+            color: "rgba(0, 0, 0, .125)",
+          }
+        }],
+      },
+      legend: {
+        display: false
+      },
+      /*
+      annotation: {
+        annotations: [{
+          type: 'line',
+          mode: 'horizontal',
+          scaleID: 'y-axis-0',
+          value: regress_linear.equation[0],
+          endValue: regress_linear.equation[1],
+          borderColor: 'rgb(75, 192, 192)',
+          borderWidth: 4,
+          label: {
+            enabled: true,
+            content: 'Trendline',
+            yAdjust: -16,
+          }
+        }]
+      }//*/
+    }
+  }
+}
+
 $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
   var eduscope = {};
   eduscope.labels = [];
@@ -47,317 +147,16 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
   eduscope.max_fivefive = eduscope.fivefive.reduce(function(a, b) { return Math.max(a, b); });
   eduscope.min_passrate = eduscope.passrate.reduce(function(a, b) { return Math.min(a, b); });
   eduscope.max_passrate = eduscope.passrate.reduce(function(a, b) { return Math.max(a, b); });
+  // for precicting
+  eduscope.labels.push(Math.max(eduscope.labels.reduce(function(a, b) {return Math.max(a, b);}))+1)
   console.debug("eduscope",eduscope)
 
-  // -- Degrees Line Chart
-  new Chart(document.getElementById("degreesLineChart"), {
-    type: 'line',
-    data: {
-      labels: eduscope.labels,
-      datasets: [
-        {
-          label: "Degrees",
-          data: eduscope.degrees,
-          lineTension: 0.3,
-          //backgroundColor: "rgba(0,0,0,0)",//invisible
-          backgroundColor: "rgba(2,117,216,0.2)",
-          borderColor: "rgba(2,117,216,1)",
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(2,117,216,1)",
-          pointBorderColor: "rgba(255,255,255,0.8)",
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: "rgba(2,117,216,1)",
-          pointHitRadius: 20,
-          pointBorderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        xAxes: [{
-          time: {
-            unit: 'year'
-          },
-          gridLines: {
-            display: false
-          },
-          ticks: {
-            maxTicksLimit: 10
-          }
-        }],
-        yAxes: [{
-          ticks: {
-            min: Math.floor((eduscope.min_degree-(eduscope.min_degree/100*5))/100)*100,
-            max: Math.ceil((eduscope.max_degree+(eduscope.max_degree/100*5))/100)*100,
-            maxTicksLimit: 10
-          },
-          gridLines: {
-            color: "rgba(0, 0, 0, .125)",
-          }
-        }],
-      },
-      legend: {
-        display: false
-      }
-    }
-  });
-  // -- Students Line Chart
-  new Chart(document.getElementById("studentsLineChart"), {
-    type: 'line',
-    data: {
-      labels: eduscope.labels,
-      datasets: [
-        {
-          label: "Students",
-          data: eduscope.students,
-          lineTension: 0.3,
-          backgroundColor: "rgba(2,117,216,0.2)",
-          borderColor: "rgba(2,117,216,1)",
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(2,117,216,1)",
-          pointBorderColor: "rgba(255,255,255,0.8)",
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: "rgba(2,117,216,1)",
-          pointHitRadius: 20,
-          pointBorderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        xAxes: [{
-          time: {
-            unit: 'year'
-          },
-          gridLines: {
-            display: false
-          },
-          ticks: {
-            maxTicksLimit: 10
-          }
-        }],
-        yAxes: [{
-          ticks: {
-            min: Math.floor((eduscope.min_student-(eduscope.min_student/100*5))/100)*100,
-            max: Math.ceil((eduscope.max_student+(eduscope.max_student/100*5))/100)*100,
-            maxTicksLimit: 10
-          },
-          gridLines: {
-            color: "rgba(0, 0, 0, .125)",
-          }
-        }],
-      },
-      legend: {
-        display: false
-      }
-    }
-  });
-
-  new Chart(document.getElementById("newLineChart"), {
-    type: 'line',
-    data: {
-      labels: eduscope.labels,
-      datasets: [
-        {
-          label: "New",
-          data: eduscope.new,
-          lineTension: 0.3,
-          backgroundColor: "rgba(2,117,216,0.2)",
-          borderColor: "rgba(2,117,216,1)",
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(2,117,216,1)",
-          pointBorderColor: "rgba(255,255,255,0.8)",
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: "rgba(2,117,216,1)",
-          pointHitRadius: 20,
-          pointBorderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        xAxes: [{
-          time: { unit: 'year' },
-          gridLines: { display: false },
-          ticks: { maxTicksLimit: 10 }
-        }],
-        yAxes: [{
-          ticks: {
-            min: Math.floor((eduscope.min_new-(eduscope.min_new/100*5))/100)*100,
-            max: Math.ceil((eduscope.max_new+(eduscope.max_new/100*5))/100)*100,
-            maxTicksLimit: 10
-          },
-          gridLines: { color: "rgba(0, 0, 0, .125)" }
-        }],
-      },
-      legend: { display: false }
-    }
-  });
-
-  new Chart(document.getElementById("presentLineChart"), {
-    type: 'line',
-    data: {
-      labels: eduscope.labels,
-      datasets: [
-        {
-          label: "Present",
-          data: eduscope.present,
-          lineTension: 0.3,
-          backgroundColor: "rgba(2,117,216,0.2)",
-          borderColor: "rgba(2,117,216,1)",
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(2,117,216,1)",
-          pointBorderColor: "rgba(255,255,255,0.8)",
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: "rgba(2,117,216,1)",
-          pointHitRadius: 20,
-          pointBorderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        xAxes: [{
-          time: { unit: 'year' },
-          gridLines: { display: false },
-          ticks: { maxTicksLimit: 10 }
-        }],
-        yAxes: [{
-          ticks: {
-            min: Math.floor((eduscope.min_present-(eduscope.min_present/100*5))/100)*100,
-            max: Math.ceil((eduscope.max_present+(eduscope.max_present/100*5))/100)*100,
-            maxTicksLimit: 10
-          },
-          gridLines: { color: "rgba(0, 0, 0, .125)" }
-        }],
-      },
-      legend: { display: false }
-    }
-  });
-
-  new Chart(document.getElementById("fteLineChart"), {
-    type: 'line',
-    data: {
-      labels: eduscope.labels,
-      datasets: [
-        {
-          label: "FTE",
-          data: eduscope.fte,
-          lineTension: 0.3,
-          backgroundColor: "rgba(2,117,216,0.2)",
-          borderColor: "rgba(2,117,216,1)",
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(2,117,216,1)",
-          pointBorderColor: "rgba(255,255,255,0.8)",
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: "rgba(2,117,216,1)",
-          pointHitRadius: 20,
-          pointBorderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        xAxes: [{
-          time: { unit: 'year' },
-          gridLines: { display: false },
-          ticks: { maxTicksLimit: 10 }
-        }],
-        yAxes: [{
-          ticks: {
-            min: Math.floor((eduscope.min_fte-(eduscope.min_fte/100*5))/100)*100,
-            max: Math.ceil((eduscope.max_fte+(eduscope.max_fte/100*5))/100)*100,
-            maxTicksLimit: 10
-          },
-          gridLines: { color: "rgba(0, 0, 0, .125)" }
-        }],
-      },
-      legend: { display: false }
-    }
-  });
-
-  new Chart(document.getElementById("fivefiveLineChart"), {
-    type: 'line',
-    data: {
-      labels: eduscope.labels,
-      datasets: [
-        {
-          label: "55sp",
-          data: eduscope.fivefive,
-          lineTension: 0.3,
-          backgroundColor: "rgba(2,117,216,0.2)",
-          borderColor: "rgba(2,117,216,1)",
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(2,117,216,1)",
-          pointBorderColor: "rgba(255,255,255,0.8)",
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: "rgba(2,117,216,1)",
-          pointHitRadius: 20,
-          pointBorderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        xAxes: [{
-          time: { unit: 'year' },
-          gridLines: { display: false },
-          ticks: { maxTicksLimit: 10 }
-        }],
-        yAxes: [{
-          ticks: {
-            min: Math.floor((eduscope.min_fivefive-(eduscope.min_fivefive/100*5))/100)*100,
-            max: Math.ceil((eduscope.max_fivefive+(eduscope.max_fivefive/100*5))/100)*100,
-            maxTicksLimit: 10
-          },
-          gridLines: { color: "rgba(0, 0, 0, .125)" }
-        }],
-      },
-      legend: { display: false }
-    }
-  });
-
-  /*
-  new Chart(document.getElementById("passrateLineChart"), {
-    type: 'line',
-    data: {
-      labels: eduscope.labels,
-      datasets: [
-        {
-          label: "Pass rate",
-          data: eduscope.passrate,
-          lineTension: 0.3,
-          backgroundColor: "rgba(2,117,216,0.2)",
-          borderColor: "rgba(2,117,216,1)",
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(2,117,216,1)",
-          pointBorderColor: "rgba(255,255,255,0.8)",
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: "rgba(2,117,216,1)",
-          pointHitRadius: 20,
-          pointBorderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        xAxes: [{
-          time: { unit: 'year' },
-          gridLines: { display: false },
-          ticks: { maxTicksLimit: 10 }
-        }],
-        yAxes: [{
-          ticks: {
-            min: Math.floor((eduscope.min_passrate-(eduscope.min_passrate/100*5))/100)*100,
-            max: Math.ceil((eduscope.max_passrate+(eduscope.max_passrate/100*5))/100)*100,
-            maxTicksLimit: 10
-          },
-          gridLines: { color: "rgba(0, 0, 0, .125)" }
-        }],
-      },
-      legend: { display: false }
-    }
-  });
-  //*/
+  new Chart(document.getElementById("degreesLineChart"), makeGraphConfig(eduscope,"degree","degrees","Degrees"));
+  new Chart(document.getElementById("studentsLineChart"), makeGraphConfig(eduscope,"student","students","Students"));
+  new Chart(document.getElementById("newLineChart"), makeGraphConfig(eduscope,"new","new","New"));
+  new Chart(document.getElementById("presentLineChart"), makeGraphConfig(eduscope,"present","present","Present"));
+  new Chart(document.getElementById("fteLineChart"), makeGraphConfig(eduscope,"fte","fte","FTE"));
+  new Chart(document.getElementById("fivefiveLineChart"), makeGraphConfig(eduscope,"fivefive","fivefive","55sp"));
+  //new Chart(document.getElementById("passrateLineChart"), makeGraphConfig(eduscope,"passrate","passrate","Pass rate"));
   
 });
