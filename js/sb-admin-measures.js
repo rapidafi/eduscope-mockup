@@ -71,16 +71,16 @@ function makeGraphConfig(eduscope,dataKey,title) {
         {//min
           label: title+" 33%",
           data: mins,
-          backgroundColor: "rgba(202,202,202,0.1)",
+          backgroundColor: "rgba(202,202,202,0.0)",//invisible
           borderColor: "rgba(202,202,202,0.3)",
-          fill: '-1'
+          //fill: '-1'
         },
         {//max
           label: title+" 67%",
           data: maxs,
           backgroundColor: "rgba(202,202,202,0.1)",
           borderColor: "rgba(202,202,202,0.3)",
-          fill: '-2'
+          fill: '-1'
         },
         {//trend with prediction by regression
           label: title+" trend",
