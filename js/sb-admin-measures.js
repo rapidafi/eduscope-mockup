@@ -73,13 +73,16 @@ function makeGraphConfig(eduscope,dataKey,title) {
           data: mins,
           backgroundColor: "rgba(202,202,202,0.0)",//invisible
           borderColor: "rgba(202,202,202,0.3)",
+          hoverBorderColor: "rgba(202,202,202,0.8)",
           //fill: '-1'
         },
         {//max
           label: title+" 67%",
           data: maxs,
           backgroundColor: "rgba(202,202,202,0.1)",
+          borderWidth: 2,
           borderColor: "rgba(202,202,202,0.3)",
+          hoverBorderColor: "rgba(202,202,202,0.8)",
           fill: '-1'
         },
         {//trend with prediction by regression
@@ -119,6 +122,7 @@ function makeGraphConfig(eduscope,dataKey,title) {
       legend: {
         display: false
       },
+      maintainAspectRatio: false
     }
   }
 }
