@@ -117,7 +117,7 @@ function makeGraphConfig(eduscope,dataKey,title) {
         }],
       },
       legend: {
-        display: true
+        display: false
       },
     }
   }
