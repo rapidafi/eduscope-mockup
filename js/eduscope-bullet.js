@@ -93,10 +93,6 @@ $(document).ready(function () {
         val.yksikko='count';
         makeBulletGraph("external","External Research Funding",val);
       }
-        if (val.mittari=="external") {
-        val.yksikko='count';
-        makeBulletGraph("external","External Research Funding",val);
-      }
     });
   });
 });
