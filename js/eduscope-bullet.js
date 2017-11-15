@@ -73,6 +73,30 @@ $(document).ready(function () {
         val.yksikko='%';
         makeBulletGraph("passrate","Pass rate 4 years",val);
       }
+       if (val.mittari=="crown") {
+        val.yksikko='indicator value';
+        makeBulletGraph("crown","Citations (Crown)",val);
+      }
+        if (val.mittari=="excellence") {
+        val.yksikko='count';
+        makeBulletGraph("excellence","Centres of Excellence",val);
+      }
+        if (val.mittari=="progress") {
+        val.yksikko='%';
+        makeBulletGraph("progress","Study Progress (55 cr %)",val);
+      }
+        if (val.mittari=="artistic") {
+        val.yksikko='count';
+        makeBulletGraph("artistic","Artistic Activity",val);
+      }
+        if (val.mittari=="external") {
+        val.yksikko='count';
+        makeBulletGraph("external","External Research Funding",val);
+      }
+        if (val.mittari=="external") {
+        val.yksikko='count';
+        makeBulletGraph("external","External Research Funding",val);
+      }
     });
   });
 });
