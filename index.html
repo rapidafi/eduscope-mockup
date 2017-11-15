@@ -52,19 +52,19 @@
             <span class="nav-link-text">Dashboard</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Strategic">
+        <!-- li class="nav-item" data-toggle="tooltip" data-placement="right" title="Strategic">
           <a class="nav-link" href="strategic.html?">
             <i class="fa fa-fw fa-area-chart"></i>
             <span class="nav-link-text">Strategic measures</span>
           </a>
-        </li>
+        </li -->
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Funding">
           <a class="nav-link" href="funding.html?">
             <i class="fa fa-fw fa-area-chart"></i>
             <span class="nav-link-text">Funding measures</span>
           </a>
         </li>
-        <li>older ones</li>
+        <!-- li>older ones</li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
           <a class="nav-link" href="charts.html?">
             <i class="fa fa-fw fa-area-chart"></i>
@@ -82,7 +82,7 @@
             <i class="fa fa-fw fa-table"></i>
             <span class="nav-link-text">Tables</span>
           </a>
-        </li>
+        </li -->
       </ul>
       <ul class="navbar-nav sidenav-toggler">
         <li class="nav-item">
@@ -285,7 +285,7 @@
 
     <script type="text/javascript">
       $(document).ready(function () {
-        $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization+"/vuosi="+qYear+"", function( data ) {
+        $.getJSON("https://sa.rapida.fi/eduscope_v"+EDUSCOPE_VERSION+".php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization+"/vuosi="+qYear+"", function( data ) {
           $("#eduscope_students").append(data[0].opiskelijat);
           $("#eduscope_degrees").append(data[0].tutkinnot);
           $("#eduscope_new").append(data[0].aloittaneet);

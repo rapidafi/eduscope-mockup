@@ -3,7 +3,7 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
-$.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
+$.getJSON("https://sa.rapida.fi/eduscope_v"+EDUSCOPE_VERSION+".php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
   var eduscope = {};
   eduscope.labels = [];
   eduscope.degrees = [];
@@ -270,7 +270,7 @@ $.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/
   //*/
 });
 
-$.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_perus_kk_ala_vuosi/organisaatio_koodi="+qOrganization+"/vuosi="+qYear, function( data ) {
+$.getJSON("https://sa.rapida.fi/eduscope_v"+EDUSCOPE_VERSION+".php/koulutus_perus_kk_ala_vuosi/organisaatio_koodi="+qOrganization+"/vuosi="+qYear, function( data ) {
   var eduscope = {};
   eduscope.labels = [];
   eduscope.degrees = [];

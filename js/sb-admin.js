@@ -70,7 +70,8 @@ var QueryString = function () {
 
 // globally used variables (filters) from arguments (query string):
 // TODO remove default values when overall system is ready for it
-let qOrganization="02609"; // oppilaitosnumero, "02609"
+let EDUSCOPE_VERSION='201712'
+let qOrganization="02470"; // oppilaitosnumero, "02609"
 let qYear=2016; // vuosi, 2016
 let qOKM="1"; // OKM ohjauksen ala, "1"
 let qMeasure="";
@@ -78,6 +79,11 @@ let qPredictYears=1;
 let qGraphMin=null;
 if (QueryString) {
   //console.debug(QueryString);
+  if (QueryString.version) {
+    if (QueryString.version == '201712') {
+      EDUSCOPE_VERSION=QueryString.version;
+    }
+  }
   if (QueryString.organization) {
     qOrganization=QueryString.organization;
   }
@@ -98,7 +104,7 @@ if (QueryString) {
   }
 }
 
-$.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
+$.getJSON("https://sa.rapida.fi/eduscope_v"+EDUSCOPE_VERSION+".php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
   $("#title_org").append(data[0].organisaatio_en);
 });
 $("#title_measure").append(qMeasure);
@@ -108,7 +114,7 @@ $(document).ready(function () {
   $('a.nav-link').each(function(){
     var oldurl = $(this).attr('href');
     if(oldurl){//skip some unwanted, nb catenate starting with "&"
-      $(this).attr('href',oldurl+"&organization="+qOrganization+"&year="+qYear);
+      $(this).attr('href',oldurl+"&version="+EDUSCOPE_VERSION+"&organization="+qOrganization+"&year="+qYear);
     }
   });
 });

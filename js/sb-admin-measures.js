@@ -127,7 +127,7 @@ function makeGraphConfig(eduscope,dataKey,title) {
   }
 }
 
-$.getJSON("https://sa.rapida.fi/eduscope_v201712.php/koulutus_vuosi_korkeakoulu/", function( data ) {
+$.getJSON("https://sa.rapida.fi/eduscope_v"+EDUSCOPE_VERSION+".php/koulutus_vuosi_korkeakoulu/", function( data ) {
   var eduscope = {};
   eduscope.labels = [];
   eduscope.degrees = [];
