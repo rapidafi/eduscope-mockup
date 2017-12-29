@@ -3,7 +3,7 @@ $(document).ready(function() {
   if (!qMeasure) {
     $('#dataTable').DataTable({
       "ajax": {
-        "url": "https://sa.rapida.fi/eduscope_v"+EDUSCOPE_VERSION+".php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization,
+        "url": "https://sa.rapida.fi/eduscope.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization+"?version="+EDUSCOPE_VERSION,
         "dataSrc": "", //there's no data-named object
       },
       "columns": [
@@ -30,7 +30,7 @@ $(document).ready(function() {
     }
     $('#dataTable').DataTable({
       "ajax": {
-        "url": "https://sa.rapida.fi/eduscope_v"+EDUSCOPE_VERSION+".php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization,
+        "url": "https://sa.rapida.fi/eduscope.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization+"?version="+EDUSCOPE_VERSION,
         "dataSrc": "", //there's no data-named object
       },
       "columns": [

@@ -105,7 +105,7 @@ if (QueryString) {
   }
 }
 
-$.getJSON("https://sa.rapida.fi/eduscope_v"+EDUSCOPE_VERSION+".php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization, function( data ) {
+$.getJSON("https://sa.rapida.fi/eduscope.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization+"?version="+EDUSCOPE_VERSION, function( data ) {
   $("#title_org").append(data[0].organisaatio_en);
 });
 $("#title_measure").append(qMeasure);

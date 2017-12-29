@@ -274,7 +274,7 @@
 
     <script type="text/javascript">
       $(document).ready(function () {
-        $.getJSON("https://sa.rapida.fi/eduscope_v"+EDUSCOPE_VERSION+".php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization+"/vuosi="+qYear+"", function( data ) {
+        $.getJSON("https://sa.rapida.fi/eduscope.php/koulutus_vuosi_korkeakoulu/organisaatio_koodi="+qOrganization+"/vuosi="+qYear+"?version="+EDUSCOPE_VERSION, function( data ) {
           $("#eduscope_students").append(data[0].opiskelijat);
           $("#eduscope_degrees").append(data[0].tutkinnot);
           $("#eduscope_new").append(data[0].aloittaneet);

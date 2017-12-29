@@ -48,7 +48,7 @@ function makeBulletGraph(partialId,title,val) {
 }
 
 $(document).ready(function () {
-  $.getJSON("https://sa.rapida.fi/eduscope_v"+EDUSCOPE_VERSION+".php/hei_bullet/mittariryhma=koulutus/oppilaitos="+qOrganization+"/vuosi="+qYear+"", function( data ) {
+  $.getJSON("https://sa.rapida.fi/eduscope.php/hei_bullet/mittariryhma=koulutus/oppilaitos="+qOrganization+"/vuosi="+qYear+"?version="+EDUSCOPE_VERSION, function( data ) {
     $.each( data, function( key, val ) {
       val.yksikko = 'count';
       if (val.mittari=="tutkinnot") {
