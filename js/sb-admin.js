@@ -70,8 +70,8 @@ var QueryString = function () {
 
 // globally used variables (filters) from arguments (query string):
 // TODO remove default values when overall system is ready for it
-let EDUSCOPE_VERSION='201801';
-let VERSIONS = ['201711','201712','201801'];
+let EDUSCOPE_VERSION='201802';
+let VERSIONS = ['201711','201712','201801','201802'];
 let qOrganization="02470"; // oppilaitosnumero, "02609"
 let qYear=2016; // vuosi, 2016
 let qOKM="1"; // OKM ohjauksen ala, "1"
